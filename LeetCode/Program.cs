@@ -14,7 +14,7 @@ namespace ConsoleApp4
     {
         static void Main(string[] args)
         {
-            IProblem problem = new Problem118();
+            IProblem problem = new Problem121();
             problem.run();
             Console.ReadLine();
         }

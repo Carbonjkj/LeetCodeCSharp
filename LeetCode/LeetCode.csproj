@@ -54,6 +54,8 @@
     <Compile Include="ProblemEZ\Problem111.cs" />
     <Compile Include="ProblemEZ\Problem112.cs" />
     <Compile Include="ProblemEZ\Problem118.cs" />
+    <Compile Include="ProblemEZ\Problem119.cs" />
+    <Compile Include="ProblemEZ\Problem121.cs" />
     <Compile Include="ProblemEZ\Problem27.cs" />
     <Compile Include="ProblemEZ\Problem28.cs" />
     <Compile Include="ProblemEZ\Problem35.cs" />
