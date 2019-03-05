@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ConsoleApp4.ProblemEZ;
 using Words = Microsoft.Office.Interop.Word;
 
 
@@ -14,7 +15,7 @@ namespace ConsoleApp4
     {
         static void Main(string[] args)
         {
-            IProblem problem = new Problem70();
+            IProblem problem = new Problem100();
             problem.run();
             Console.ReadLine();
         }

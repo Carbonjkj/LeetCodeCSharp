@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="IProblem.cs" />
     <Compile Include="Objects\ListNode.cs" />
+    <Compile Include="Objects\TreeNode.cs" />
+    <Compile Include="ProblemEZ\Problem100.cs" />
     <Compile Include="ProblemEZ\Problem27.cs" />
     <Compile Include="ProblemEZ\Problem28.cs" />
     <Compile Include="ProblemEZ\Problem35.cs" />
