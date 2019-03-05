@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace ConsoleApp4.ProblemEZ
+namespace LeetCode.ProblemEZ
 {
     /*
      * Say you have an array for which the ith element is the price of a given stock on day i.
@@ -64,7 +59,7 @@ namespace ConsoleApp4.ProblemEZ
          * Memory Usage: 23.1 MB, less than 66.35% of C# online submissions for Best Time to Buy and Sell Stock.
          *
          */
-        // Much better, first was too complicated!
+        // Much better, first one was too complicated!
         public int MaxProfitV2(int[] prices)
         {
             if (prices.Length == 0) return 0;

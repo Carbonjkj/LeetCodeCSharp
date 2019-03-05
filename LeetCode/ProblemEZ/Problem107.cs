@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ConsoleApp4.Objects;
+using LeetCode.Objects;
 
-namespace ConsoleApp4.ProblemEZ
+namespace LeetCode.ProblemEZ
 {
     /*
      * Given a binary tree, return the bottom-up level order traversal of its nodes' values. (ie, from left to right, level by level from leaf to root).

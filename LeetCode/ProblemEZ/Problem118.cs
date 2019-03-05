@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace ConsoleApp4.ProblemEZ
+namespace LeetCode.ProblemEZ
 {
     /*
      * Given a non-negative integer numRows, generate the first numRows of Pascal's triangle.

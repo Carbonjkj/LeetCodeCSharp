@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ConsoleApp4.Objects;
+using LeetCode.Objects;
 
-namespace ConsoleApp4.ProblemEZ
+namespace LeetCode.ProblemEZ
 {
     /*
      * Given two binary trees, write a function to check if they are the same or not.

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ConsoleApp4.Objects;
+﻿using LeetCode.Objects;
 
-namespace ConsoleApp4.ProblemEZ
+namespace LeetCode.ProblemEZ
 {
     /*
      * Given an array where elements are sorted in ascending order, convert it to a height balanced BST.
