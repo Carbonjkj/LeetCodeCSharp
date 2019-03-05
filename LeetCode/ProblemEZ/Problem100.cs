@@ -73,9 +73,9 @@ namespace ConsoleApp4.ProblemEZ
         // Much Faster!
         public bool IsSameTreeV2(TreeNode p, TreeNode q)
         {
-            return p != null && q != null
-                ? p.val == q.val && IsSameTreeV2(p.left, q.left) && IsSameTreeV2(p.right, q.right)
-                : p == null && q == null;
+            return p != null && q != null                                                               // not all null condition
+                ? p.val == q.val && IsSameTreeV2(p.left, q.left) && IsSameTreeV2(p.right, q.right)      // p.left = q.left and p.right = q.right and p.val == q.val(endpoint)
+                : p == null && q == null;                                                               // all null = true(endpoint);
         }
     }
 }

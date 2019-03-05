@@ -19,11 +19,45 @@ namespace ConsoleApp4.ProblemEZ
         public void run()
         {
             var root = new TreeNode(0);
+            //root.left = new TreeNode(1);
+            root.right = new TreeNode(2);
+            root.right.right = new TreeNode(2);
             Console.WriteLine(IsBalanced(root));
         }
+
+        /*
+         * Runtime: 100 ms, faster than 100.00% of C# online submissions for Balanced Binary Tree.
+         * Memory Usage: 25.2 MB, less than 62.86% of C# online submissions for Balanced Binary Tree.
+         */
         public bool IsBalanced(TreeNode root)
         {
-            return false;
+            var n = IsBalancedSub(root, 0);
+            Console.WriteLine(n);
+            return n != -1;
+        }
+
+        public int IsBalancedSub(TreeNode tn, int depth)
+        {
+
+            if (tn == null)
+            {
+                return depth;
+            }
+            if (depth == -1)
+            {
+                depth = -1;
+            }
+            else
+            {
+                depth++;
+            }
+            var depl = IsBalancedSub(tn.left, depth);
+            var depr = IsBalancedSub(tn.right, depth);
+            if (Math.Abs(depl - depr) > 1)
+            {
+                return -1;
+            }
+            return Math.Max(depl, depr);
         }
     }
 }
