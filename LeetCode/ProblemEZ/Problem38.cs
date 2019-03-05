@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp4
+namespace LeetCode.ProblemEZ
 {
     /**
      * The count-and-say sequence is the sequence of integers with the first five terms as following:

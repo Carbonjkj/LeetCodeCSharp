@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp4
+namespace LeetCode.ProblemEZ
 {
     /*
      * Given a non-empty array of digits representing a non-negative integer, plus one to the integer.

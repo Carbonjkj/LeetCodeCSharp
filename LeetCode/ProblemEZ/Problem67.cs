@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp4
+namespace LeetCode.ProblemEZ
 {
     /**
      * Given two binary strings, return their sum (also a binary string).

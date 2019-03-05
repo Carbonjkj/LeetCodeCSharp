@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ConsoleApp4
+namespace LeetCode.ProblemEZ
 {
     /*
      * Given an array nums and a value val, remove all instances of that value in-place and return the new length.

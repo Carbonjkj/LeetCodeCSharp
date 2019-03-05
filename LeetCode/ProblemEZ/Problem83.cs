@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ConsoleApp4.Objects;
+﻿using ConsoleApp4.Objects;
 
-namespace ConsoleApp4
+namespace LeetCode.ProblemEZ
 {
     public class Problem83 : IProblem
     {

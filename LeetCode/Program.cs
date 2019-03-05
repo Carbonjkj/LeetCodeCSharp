@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Words = Microsoft.Office.Interop.Word;
+using LeetCode.ProblemEZ;
 
 
-namespace ConsoleApp4
+namespace LeetCode
 {
     class Program
     {
         static void Main(string[] args)
         {
-            IProblem problem = new Problem70();
+            IProblem problem = new Problem88();
             problem.run();
             Console.ReadLine();
         }
