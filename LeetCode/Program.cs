@@ -6,9 +6,9 @@ namespace LeetCode
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            IProblem problem = new Problem122();
+            IProblem problem = new Problem190();
             problem.run();
             Console.ReadLine();
         }

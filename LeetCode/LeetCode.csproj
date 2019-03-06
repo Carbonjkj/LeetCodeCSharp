@@ -43,20 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IProblem.cs" />
+    <Compile Include="Objects\DoublyLinkNode.cs" />
     <Compile Include="Objects\ListNode.cs" />
+    <Compile Include="Objects\MinNode.cs" />
     <Compile Include="Objects\TreeNode.cs" />
     <Compile Include="ProblemEZ\Problem100.cs" />
-    <Compile Include="ProblemEZ\Problem101.cs" />
-    <Compile Include="ProblemEZ\Problem104.cs" />
-    <Compile Include="ProblemEZ\Problem107.cs" />
-    <Compile Include="ProblemEZ\Problem108.cs" />
-    <Compile Include="ProblemEZ\Problem110.cs" />
-    <Compile Include="ProblemEZ\Problem111.cs" />
-    <Compile Include="ProblemEZ\Problem112.cs" />
-    <Compile Include="ProblemEZ\Problem118.cs" />
-    <Compile Include="ProblemEZ\Problem119.cs" />
-    <Compile Include="ProblemEZ\Problem121.cs" />
-    <Compile Include="ProblemEZ\Problem122.cs" />
     <Compile Include="ProblemEZ\Problem27.cs" />
     <Compile Include="ProblemEZ\Problem28.cs" />
     <Compile Include="ProblemEZ\Problem35.cs" />
