@@ -80,7 +80,6 @@ namespace LeetCode.ProblemEZ
         }
     }
 
-
     // 101. Symmetric Tree
     public class Problem101 : IProblem
     {
@@ -155,7 +154,6 @@ namespace LeetCode.ProblemEZ
             return Math.Max(MaxDepthSub(tn.left, depth), MaxDepthSub(tn.right, depth));
         }
     }
-
 
     // 107. Binary Tree Level Order Traversal II
     public class Problem107 : IProblem
@@ -373,7 +371,6 @@ namespace LeetCode.ProblemEZ
 
     }
 
-
     // 112. Path Sum
     public class Problem112 : IProblem
     {
@@ -419,8 +416,6 @@ namespace LeetCode.ProblemEZ
         }
 
     }
-
-
 
     // 118. Pascal's Triangle
     public class Problem118 : IProblem
@@ -797,9 +792,6 @@ namespace LeetCode.ProblemEZ
         }
     }
 
-
-
-
     // 141. Linked List Cycle
     public class Problem141 : IProblem
     {
@@ -878,7 +870,6 @@ namespace LeetCode.ProblemEZ
         }
 
     }
-
 
     // 155. Min Stack
     #region Problem155
@@ -1057,8 +1048,6 @@ namespace LeetCode.ProblemEZ
     }
 
 
-
-
     public class MinStack
     {
         /*
@@ -1194,7 +1183,6 @@ namespace LeetCode.ProblemEZ
 
     }
 
-
     // 167. Two Sum II - Input array is sorted
     public class Problem167 : IProblem
     {
@@ -1276,7 +1264,6 @@ namespace LeetCode.ProblemEZ
 
     }
 
-
     // 169. Majority Element
     public class Problem169 : IProblem
     {
@@ -1332,9 +1319,6 @@ namespace LeetCode.ProblemEZ
         }
     }
 
-
-
-
     // 171. Excel Sheet Column Number
     public class Problem171 : IProblem
     {
@@ -1366,7 +1350,6 @@ namespace LeetCode.ProblemEZ
         }
     }
 
-
     // 172. Factorial Trailing Zeroes
     public class Problem172 : IProblem
     {
@@ -1390,9 +1373,7 @@ namespace LeetCode.ProblemEZ
 
     }
 
-
-
-    // 175. Combine Two Tables    
+    // 175. Combine Two Tables (SQL)   
     public class Problem175 : IProblem
     {
         /*
@@ -1438,12 +1419,7 @@ namespace LeetCode.ProblemEZ
         }
     }
 
-
-
-
-
-
-    // 176. Second Highest Salary    
+    // 176. Second Highest Salary (SQL)   
     public class Problem176 : IProblem
     {
         /*
@@ -1472,7 +1448,6 @@ namespace LeetCode.ProblemEZ
             // select MAX(Salary ) as SecondHighestSalary  from Employee where Salary  <> (SELECT MAX(Salary ) from Employee) ;
         }
     }
-
 
     // 189. Rotate Array    
     public class Problem189 : IProblem
@@ -1511,8 +1486,6 @@ namespace LeetCode.ProblemEZ
         }
     }
 
-
-
     // 190. Reverse Bits
     public class Problem190 : IProblem
     {
@@ -1540,7 +1513,6 @@ namespace LeetCode.ProblemEZ
         }
     }
 
-
     // 191. Number of 1 Bits
     public class Problem191 : IProblem
     {
@@ -1549,10 +1521,77 @@ namespace LeetCode.ProblemEZ
          */
         public void run()
         {
-            throw new NotImplementedException();
+            Console.WriteLine(HammingWeight(13));
+        }
+        /*
+         * Runtime: 36 ms, faster than 100.00% of C# online submissions for Number of 1 Bits.
+         * Memory Usage: 12.8 MB, less than 87.50% of C# online submissions for Number of 1 Bits.
+         */
+        public int HammingWeight(uint n)
+        {
+            int cnt = 0;
+            for (int i = 0; i < 32; i++)
+            {
+                if ((n & 0x0001) == 1) cnt++;
+                n = n >> 1;
+            }
+            return cnt;
         }
     }
 
+    // 193. Valid Phone Numbers (bash) todo
+    public class Problem193 : IProblem
+    {
+        /*
+         * Given a text file file.txt that contains list of phone numbers (one per line), write a one liner bash script to print all valid phone numbers.
+         *
+         * You may assume that a valid phone number must appear in one of the following two formats: (xxx) xxx-xxxx or xxx-xxx-xxxx. (x means a digit)
+         *
+         * You may also assume each line in the text file must not contain leading or trailing white spaces.
+         */
+        public void run()
+        {
 
+        }
+    }
+
+    // 198. House Robber
+    public class Problem198 : IProblem
+    {
+        /*
+         * You are a professional robber planning to rob houses along a street.
+         * Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and it will automatically contact the police if two adjacent houses were broken into on the same night.
+         *
+         * Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.
+         */
+        public static Dictionary<int, int> stored = new Dictionary<int, int>();
+        public void run()
+        {
+            //var nums = new[] { 114, 117, 207, 117, 235, 82, 90, 67, 143, 146, 53, 108, 200, 91, 80, 223, 58, 170, 110, 236, 81, 90, 222, 160, 165, 195, 187, 199, 114, 235, 197, 187, 69, 129, 64, 214, 228, 78, 188, 67, 205, 94, 205, 169, 241, 202, 144, 240 };
+            var nums = new[] { 2, 7, 9, 3, 1 };
+            Console.WriteLine(Rob(nums));
+        }
+        public int Rob(int[] nums)
+        {
+            return RobSub(nums, nums.Length - 1);
+        }
+
+        public int RobSub(int[] nums, int k)
+        {
+            if (k < 0)
+            {
+                return 0;
+            }
+            if (stored.ContainsKey(k))
+            {
+                return stored[k];
+            }
+            int value = Math.Max(RobSub(nums, k - 2) + nums[k], RobSub(nums, k - 1));
+            Console.WriteLine($"k:{k}, value:{value}");
+            stored.Add(k, value);
+
+            return value;
+        }
+    }
 }
 

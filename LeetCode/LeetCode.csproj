@@ -47,19 +47,8 @@
     <Compile Include="Objects\ListNode.cs" />
     <Compile Include="Objects\MinNode.cs" />
     <Compile Include="Objects\TreeNode.cs" />
+    <Compile Include="ProblemEZ\Problem000.cs" />
     <Compile Include="ProblemEZ\Problem100.cs" />
-    <Compile Include="ProblemEZ\Problem27.cs" />
-    <Compile Include="ProblemEZ\Problem28.cs" />
-    <Compile Include="ProblemEZ\Problem35.cs" />
-    <Compile Include="ProblemEZ\Problem38.cs" />
-    <Compile Include="ProblemEZ\Problem53.cs" />
-    <Compile Include="ProblemEZ\Problem58.cs" />
-    <Compile Include="ProblemEZ\Problem66.cs" />
-    <Compile Include="ProblemEZ\Problem67.cs" />
-    <Compile Include="ProblemEZ\Problem69.cs" />
-    <Compile Include="ProblemEZ\Problem70.cs" />
-    <Compile Include="ProblemEZ\Problem83.cs" />
-    <Compile Include="ProblemEZ\Problem88.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

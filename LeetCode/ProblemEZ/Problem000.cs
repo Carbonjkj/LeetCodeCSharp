@@ -59,6 +59,7 @@ namespace LeetCode.ProblemEZ
         }
 
     }
+
     // 28. Implement strStr()
     public class Problem28 : IProblem
     {
@@ -120,6 +121,7 @@ namespace LeetCode.ProblemEZ
             return -1;
         }
     }
+
     // 35. Search Insert Position
     public class Problem35 : IProblem
     {
@@ -172,6 +174,7 @@ namespace LeetCode.ProblemEZ
 
         }
     }
+
     // 38. Count and Say
     public class Problem38 : IProblem
     {
@@ -238,6 +241,7 @@ namespace LeetCode.ProblemEZ
 
         }
     }
+
     // 53. Maximum Subarray
     public class Problem53 : IProblem
     {
@@ -270,6 +274,7 @@ namespace LeetCode.ProblemEZ
 
 
     }
+
     // 58. Length of Last Word
     public class Problem58 : IProblem
     {
@@ -316,6 +321,7 @@ namespace LeetCode.ProblemEZ
         }
 
     }
+
     // 66. Plus One
     public class Problem66 : IProblem
     {
@@ -362,7 +368,6 @@ namespace LeetCode.ProblemEZ
             }
         }
     }
-
 
     // 67. Add Binary
     public class Problem67 : IProblem
@@ -425,6 +430,7 @@ namespace LeetCode.ProblemEZ
 
 
     }
+
     // 69. Sqrt(x)
     public class Problem69 : IProblem
     {
@@ -526,6 +532,7 @@ namespace LeetCode.ProblemEZ
         }
 
     }
+
     // 83. Remove Duplicates from Sorted List
     public class Problem83 : IProblem
     {
@@ -560,6 +567,7 @@ namespace LeetCode.ProblemEZ
             return saveHead;
         }
     }
+
     // 88. Merge Sorted Array
     class Problem88 : IProblem
     {
@@ -609,6 +617,4 @@ namespace LeetCode.ProblemEZ
             Console.WriteLine(string.Join(" ", nums1));
         }
     }
-
-
 }
