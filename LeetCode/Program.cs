@@ -8,7 +8,7 @@ namespace LeetCode
     {
         static void Main()
         {
-            IProblem problem = new Problem198();
+            IProblem problem = new Problem234();
             problem.run();
             Console.ReadLine();
         }

@@ -872,8 +872,6 @@ namespace LeetCode.ProblemEZ
     }
 
     // 155. Min Stack
-    #region Problem155
-
     public class Problem155 : IProblem
     {
         /*
@@ -904,39 +902,66 @@ namespace LeetCode.ProblemEZ
             //minStack.Pop();
             //Console.WriteLine(minStack.GetMin());   //--> Returns - 2.
         }
-    }
 
-
-    public class MinStackBad
-    {
-        /*
-         * Your MinStack object will be instantiated and called as such:
-         * MinStack obj = new MinStack();
-         * obj.Push(x);
-         * obj.Pop();
-         * int param_3 = obj.Top();
-         * int param_4 = obj.GetMin();
-         */
-        // First In Last Out
-
-
-        /*
-         * Runtime: 728 ms, faster than 5.09% of C# online submissions for Min Stack.
-         * Memory Usage: 33.4 MB, less than 44.90% of C# online submissions for Min Stack.
-         */
-        // This is bullshit!!!!!! This is STUPID!! Why did i consist at looking for the last element!!!!
-        private ListNode stack;
-
-        /** initialize your data structure here. */
-
-
-        public void Push(int x)
+        public class MinStackBad
         {
-            if (stack == null)
+            /*
+             * Your MinStack object will be instantiated and called as such:
+             * MinStack obj = new MinStack();
+             * obj.Push(x);
+             * obj.Pop();
+             * int param_3 = obj.Top();
+             * int param_4 = obj.GetMin();
+             */
+            // First In Last Out
+
+
+            /*
+             * Runtime: 728 ms, faster than 5.09% of C# online submissions for Min Stack.
+             * Memory Usage: 33.4 MB, less than 44.90% of C# online submissions for Min Stack.
+             */
+            // This is bullshit!!!!!! This is STUPID!! Why did i consist at looking for the last element!!!!
+            private ListNode stack;
+
+            /** initialize your data structure here. */
+
+
+            public void Push(int x)
             {
-                stack = new ListNode(x);
+                if (stack == null)
+                {
+                    stack = new ListNode(x);
+                }
+                else
+                {
+                    var temp = stack;
+                    while (temp.next != null)
+                    {
+                        temp = temp.next;
+                    }
+
+                    temp.next = new ListNode(x);
+                }
             }
-            else
+
+            public void Pop()
+            {
+                if (stack?.next == null)
+                {
+                    stack = null;
+                    return;
+                }
+
+                var temp = stack;
+                while (temp.next.next != null)
+                {
+                    temp = temp.next;
+                }
+
+                temp.next = null;
+            }
+
+            public int Top()
             {
                 var temp = stack;
                 while (temp.next != null)
@@ -944,151 +969,118 @@ namespace LeetCode.ProblemEZ
                     temp = temp.next;
                 }
 
-                temp.next = new ListNode(x);
-            }
-        }
-
-        public void Pop()
-        {
-            if (stack?.next == null)
-            {
-                stack = null;
-                return;
+                return temp.val;
             }
 
-            var temp = stack;
-            while (temp.next.next != null)
+            public int GetMin()
             {
-                temp = temp.next;
-            }
-
-            temp.next = null;
-        }
-
-        public int Top()
-        {
-            var temp = stack;
-            while (temp.next != null)
-            {
-                temp = temp.next;
-            }
-
-            return temp.val;
-        }
-
-        public int GetMin()
-        {
-            var temp = stack;
-            int min = stack?.val ?? 0;
-            while (temp.next != null)
-            {
-                temp = temp.next;
-                min = Math.Min(min, temp.val);
-            }
-
-            return min;
-        }
-    }
-
-    public class MinStackBetter
-    {
-        /*
-         * Runtime: 300 ms, faster than 16.55% of C# online submissions for Min Stack.
-         * Memory Usage: 33.2 MB, less than 91.84% of C# online submissions for Min Stack.
-         */
-
-        // This is Still BullShit!
-        /** initialize your data structure here. */
-        private List<int> _stack;
-        private int _pos;
-
-        public MinStackBetter()
-        {
-            _stack = new List<int>();
-            _pos = 0;
-        }
-
-        public void Push(int x)
-        {
-            if (_pos > _stack.Count - 1)
-            {
-                _stack.Add(x);
-                _pos++;
-            }
-            else
-            {
-                _stack[_pos++] = x;
-            }
-        }
-
-        public void Pop()
-        {
-            if (--_pos < 0) _pos = 0;
-        }
-
-        public int Top()
-        {
-            if (_pos - 1 < 0) _pos = 0;
-            return _stack[_pos - 1];
-        }
-
-        public int GetMin()
-        {
-            int min = _stack[0];
-            for (int i = 0; i < _pos; i++)
-            {
-                if (_stack[i] < min)
+                var temp = stack;
+                int min = stack?.val ?? 0;
+                while (temp.next != null)
                 {
-                    min = _stack[i];
+                    temp = temp.next;
+                    min = Math.Min(min, temp.val);
+                }
+
+                return min;
+            }
+        }
+
+        public class MinStackBetter
+        {
+            /*
+             * Runtime: 300 ms, faster than 16.55% of C# online submissions for Min Stack.
+             * Memory Usage: 33.2 MB, less than 91.84% of C# online submissions for Min Stack.
+             */
+
+            // This is Still BullShit!
+            /** initialize your data structure here. */
+            private List<int> _stack;
+            private int _pos;
+
+            public MinStackBetter()
+            {
+                _stack = new List<int>();
+                _pos = 0;
+            }
+
+            public void Push(int x)
+            {
+                if (_pos > _stack.Count - 1)
+                {
+                    _stack.Add(x);
+                    _pos++;
+                }
+                else
+                {
+                    _stack[_pos++] = x;
                 }
             }
 
-            return min;
+            public void Pop()
+            {
+                if (--_pos < 0) _pos = 0;
+            }
+
+            public int Top()
+            {
+                if (_pos - 1 < 0) _pos = 0;
+                return _stack[_pos - 1];
+            }
+
+            public int GetMin()
+            {
+                int min = _stack[0];
+                for (int i = 0; i < _pos; i++)
+                {
+                    if (_stack[i] < min)
+                    {
+                        min = _stack[i];
+                    }
+                }
+
+                return min;
+            }
+        }
+
+        public class MinStack
+        {
+            /*
+             * Runtime: 140 ms, faster than 92.73% of C# online submissions for Min Stack.
+             * Memory Usage: 33.5 MB, less than 30.61% of C# online submissions for Min Stack.
+             */
+            private MinNode stack;
+
+            /** initialize your data structure here. */
+
+            public void Push(int x)
+            {
+                if (stack == null)
+                {
+                    stack = new MinNode(x);
+                }
+                else
+                {
+                    stack = new MinNode(x, stack);
+                }
+            }
+
+            public void Pop()
+            {
+                stack = stack.Next;
+            }
+
+            public int Top()
+            {
+                return stack.Val;
+            }
+
+            public int GetMin()
+            {
+                return stack.Min;
+            }
         }
     }
-
-
-    public class MinStack
-    {
-        /*
-         * Runtime: 140 ms, faster than 92.73% of C# online submissions for Min Stack.
-         * Memory Usage: 33.5 MB, less than 30.61% of C# online submissions for Min Stack.
-         */
-        private MinNode stack;
-
-        /** initialize your data structure here. */
-
-        public void Push(int x)
-        {
-            if (stack == null)
-            {
-                stack = new MinNode(x);
-            }
-            else
-            {
-                stack = new MinNode(x, stack);
-            }
-        }
-
-        public void Pop()
-        {
-            stack = stack.Next;
-        }
-
-        public int Top()
-        {
-            return stack.Val;
-        }
-
-        public int GetMin()
-        {
-            return stack.Min;
-        }
-    }
-
-
-
-    #endregion
 
     // 160. Intersection of Two Linked Lists
     public class Problem160 : IProblem
@@ -1593,5 +1585,7 @@ namespace LeetCode.ProblemEZ
             return value;
         }
     }
+
+
 }
 
