@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Runtime.Remoting.Messaging;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using LeetCode.Objects;
@@ -622,6 +623,421 @@ A happy number is a number defined by the following process: Starting with any p
                 return LowestCommonAncestor(root.left, p, q);
             }
             return root;
+        }
+    }
+
+    // 237. Delete Node in a Linked List
+    public class Problem237 : IProblem
+    {
+        /*
+         * Write a function to delete a node (except the tail) in a singly linked list, given only access to that node.
+         *
+         * Given linked list -- head = [4,5,1,9], which looks like following:
+         */
+        public void run()
+        {
+
+        }
+        /*
+         *
+         * Runtime: 92 ms, faster than 100.00% of C# online submissions for Delete Node in a Linked List.
+         * Memory Usage: 23.2 MB, less than 50.00% of C# online submissions for Delete Node in a Linked List.
+         */
+        public void DeleteNode(ListNode node)
+        {
+            node.val = node.next.val;
+            node.next = node.next.next;
+        }
+    }
+
+    // 242. Valid Anagram
+    public class Problem242 : IProblem
+    {
+        /*
+         * Given two strings s and t , write a function to determine if t is an anagram of s.
+         * Note:
+         * You may assume the string contains only lowercase alphabets.
+         *
+         * Follow up:
+         * What if the inputs contain unicode characters? How would you adapt your solution to such case?
+         */
+        public void run()
+        {
+            Console.WriteLine(IsAnagram("anagram", "nagaram"));
+        }
+
+        /*
+         * Runtime: 76 ms, faster than 97.84% of C# online submissions for Valid Anagram.
+         * Memory Usage: 21.8 MB, less than 38.98% of C# online submissions for Valid Anagram.
+         */
+        public bool IsAnagram(string s, string t)
+        {
+            if (s.Length != t.Length)
+            {
+                return false;
+            }
+            var ascii = new char[256];
+            for (int i = 0; i < s.Length; i++)
+            {
+                ascii[s[i]]++;
+                ascii[t[i]]--;
+            }
+
+            for (int i = 0; i < 256; i++)
+            {
+                if (ascii[i] != 0) return false;
+            }
+
+            return true;
+        }
+    }
+
+    // 257. Binary Tree Paths
+    public class Problem257 : IProblem
+    {
+        /*
+         * Given a binary tree, return all root-to-leaf paths.
+         *
+         * Note: A leaf is a node with no children.
+         */
+        public void run()
+        {
+            Console.WriteLine(string.Join("\n", BinaryTreePaths(new TreeNode(0))));
+        }
+        /*
+         * Runtime: 260 ms, faster than 95.36% of C# online submissions for Binary Tree Paths.
+         * Memory Usage: 29.8 MB, less than 53.57% of C# online submissions for Binary Tree Paths.
+         */
+        public IList<string> BinaryTreePaths(TreeNode root)
+        {
+            var list = new List<string>();
+            if (root == null) return list;
+            if (root.left == null && root.right == null)
+            {
+                list.Add(root.val.ToString());
+                return list;
+            }
+            BinaryTreePaths(ref list, "", root);
+            return list;
+        }
+        public void BinaryTreePaths(ref List<string> list, string str, TreeNode root)
+        {
+            if (root == null) return;
+            if (root.left == null && root.right == null)
+            {
+                list.Add(str += root.val);
+                return;
+            }
+            BinaryTreePaths(ref list, str + root.val + "->", root.left);
+            BinaryTreePaths(ref list, str + root.val + "->", root.right);
+        }
+    }
+
+    // 258. Add Digits
+    public class Problem258 : IProblem
+    {
+        /*
+         * Given a non-negative integer num, repeatedly add all its digits until the result has only one digit.
+         */
+        public void run()
+        {
+            Console.WriteLine(AddDigits(1654983516));
+
+        }
+        /*
+         * Runtime: 40 ms, faster than 100.00% of C# online submissions for Add Digits.
+         * Memory Usage: 12.9 MB, less than 38.46% of C# online submissions for Add Digits.
+         */
+        public int AddDigits(int num)
+        {
+            if (num < 10) return num;
+            int n = 0;
+            while (num > 0)
+            {
+                n += num % 10;
+                num = num / 10;
+            }
+            return AddDigits(n);
+        }
+    }
+
+    //263. Ugly Number
+    public class Problem263 : IProblem
+    {
+        /*
+         * Write a program to check whether a given number is an ugly number.
+         *
+         * Ugly numbers are positive numbers whose prime factors only include 2, 3, 5.
+         *
+         * Note:
+         *
+         * 1 is typically treated as an ugly number.
+         * Input is within the 32-bit signed integer range: [−231,  231 − 1].
+         */
+        public void run()
+        {
+            Console.WriteLine(IsUgly(-2147483648));
+        }
+        /*
+         * Runtime: 48 ms, faster than 72.41% of C# online submissions for Ugly Number.
+         * Memory Usage: 12.9 MB, less than 88.89% of C# online submissions for Ugly Number.
+         */
+
+        public bool IsUgly(int num)
+        {
+            if (num == 0) return false;
+            if (num == 1) return true;
+            if (num % 2 == 0)
+            {
+                num /= 2;
+                return IsUgly(num);
+            }
+
+            if (num % 3 == 0)
+            {
+                num /= 3;
+                return IsUgly(num);
+            }
+
+            if (num % 5 == 0)
+            {
+                num /= 5;
+                return IsUgly(num);
+            }
+
+            return num == 1;
+        }
+    }
+
+    // 268. Missing Number
+    public class Problem268 : IProblem
+    {
+        /*
+         * Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.
+         * Note:
+         * Your algorithm should run in linear runtime complexity. Could you implement it using only constant extra space complexity?
+         */
+        public void run()
+        {
+
+        }
+        /*
+         * Runtime: 112 ms, faster than 91.00% of C# online submissions for Missing Number.
+         * Memory Usage: 27.4 MB, less than 51.79% of C# online submissions for Missing Number.
+         */
+        public int MissingNumber(int[] nums)
+        {
+            int min = nums.Min();
+            int max = nums.Max();
+            if (min != 0) return 0; // for case [1];
+            int i = (max + min) * (max - min + 1) / 2 - nums.Sum();
+            if (i == 0) return max + 1; // for case[0];
+            return i;
+        }
+    }
+
+    // 278. First Bad Version   
+    public class Problem278 : IProblem
+    {
+        /*
+         * You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.
+         *
+         * Suppose you have n versions [1, 2, ..., n] and you want to find out the first bad one, which causes all the following ones to be bad.
+         *
+         * You are given an API bool isBadVersion(version) which will return whether version is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.
+         */
+        public void run()
+        {
+            Console.WriteLine(FirstBadVersion(2126753390));
+        }
+        /*
+         * Runtime: 36 ms, faster than 100.00% of C# online submissions for First Bad Version.
+         * Memory Usage: 12.9 MB, less than 8.33% of C# online submissions for First Bad Version.
+         */
+        public int FirstBadVersion(int n)
+        {
+            int k = 0;
+            while (n - k > 1)
+            {
+                int check = (int)(((long)k + n) / 2);
+                Console.WriteLine($"n: {n}, k:{k}, Check {check}");
+                if (IsBadVersion(check))
+                {
+                    n = check;
+                }
+                else
+                {
+                    k = check;
+                }
+                Console.WriteLine($"n: {n}, k:{k}");
+            }
+            return n;
+        }
+
+
+        bool IsBadVersion(int version)
+        {
+            return version >= 1702766719;
+        }
+    }
+
+    // 283. Move Zeroes
+    public class Problem283 : IProblem
+    {
+        /*
+         * Given an array nums, write a function to move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+         *
+         * Example:
+         *
+         * Input: [0,1,0,3,12]
+         * Output: [1,3,12,0,0]
+         *
+         * Note:
+         *
+         * You must do this in-place without making a copy of the array.
+         * Minimize the total number of operations.
+         */
+        public void run()
+        {
+            MoveZeroes(new[] { 1, 0 });
+        }
+        /*
+         * Runtime: 336 ms, faster than 15.74% of C# online submissions for Move Zeroes.
+         * Memory Usage: 30 MB, less than 66.96% of C# online submissions for Move Zeroes.
+         */
+        public void MoveZeroes(int[] nums)
+        {
+            int nzero = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] == 0)
+                {
+                    if (nzero == 0) nzero = i + 1;
+                    if (nzero >= nums.Length) return;
+                    for (int j = nzero; j < nums.Length; j++)
+                    {
+                        if (nums[j] != 0)
+                        {
+                            nums[i] = nums[j];
+                            nums[j] = 0;
+                            nzero = j + 1;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        /*
+         * Runtime: 304 ms, faster than 42.29% of C# online submissions for Move Zeroes.
+         * Memory Usage: 29.9 MB, less than 90.43% of C# online submissions for Move Zeroes.
+         */
+        public void MoveZeroesV2(int[] nums)
+        {
+            int nzero = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] != 0) nums[nzero++] = nums[i];
+            }
+            while (nzero < nums.Length)
+            {
+                nums[nzero++] = 0;
+            }
+        }
+    }
+
+    // 290. Word Pattern
+    public class Problem290 : IProblem
+    {
+        /*
+         * Given a pattern and a string str, find if str follows the same pattern.
+         *
+         * Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty word in str.
+         *
+         * Notes:
+         * You may assume pattern contains only lowercase letters, and str contains lowercase letters separated by a single space.
+         */
+        public void run()
+        {
+            Console.WriteLine(WordPattern("abba", "dog cat cat dog"));
+        }
+
+        /*
+         * Runtime: 96 ms, faster than 34.04% of C# online submissions for Word Pattern.
+         * Memory Usage: 20 MB, less than 10.00% of C# online submissions for Word Pattern.
+         */
+        public bool WordPattern(string pattern, string str)
+        {
+            Dictionary<char, string> dict = new Dictionary<char, string>();
+            var strs = str.Split(' ');
+            if (pattern.Length != strs.Length) return false;
+            for (int i = 0; i < pattern.Length; i++)
+            {
+                if (!dict.ContainsKey(pattern[i]))
+                {
+                    dict.Add(pattern[i], strs[i]);
+                }
+                else
+                {
+                    if (!dict[pattern[i]].Equals(strs[i])) return false;
+                }
+            }
+            var set = new HashSet<string>();
+            foreach (var dictKey in dict.Keys)
+            {
+                if (!set.Add(dict[dictKey])) return false;
+            }
+            return true;
+        }
+        // todo:
+        public bool WordPatternV2(string pattern, string str)
+        {
+            return false;
+        }
+
+    }
+
+    // 292. Nim Game
+    public class Problem292 : IProblem
+    {
+
+        /*
+         * You are playing the following Nim Game with your friend: There is a heap of stones on the table, each time one of you take turns to remove 1 to 3 stones. The one who removes the last stone will be the winner. You will take the first turn to remove the stones.
+         *
+         * Both of you are very clever and have optimal strategies for the game. Write a function to determine whether you can win the game given the number of stones in the heap.
+         */
+        public void run()
+        {
+            for (int i = 1; i < 100; i++)
+            {
+                Console.WriteLine($"i = {i}, {CanWinNim(i)}");
+            }
+        }
+
+        public bool CanWinNim(int n)
+        {
+            return CanWinNimSub(n, 1);
+        }
+        /*
+         * Runtime: 36 ms, faster than 100.00% of C# online submissions for Nim Game.
+         * Memory Usage: 12.8 MB, less than 75.00% of C# online submissions for Nim Game.
+         */
+        public bool CanWinNimSub(int n, int count)
+        {
+            if (n == 1) return count % 2 == 1;
+            if (n % 4 == 0) return count % 2 == 0;
+            if (n % 4 == 3) return CanWinNimSub(n - 3, ++count);
+            if (n % 4 == 2) return CanWinNimSub(n - 2, ++count);
+            return CanWinNimSub(n - 1, ++count);
+        }
+
+        /*
+         * Runtime: 48 ms, faster than 16.84% of C# online submissions for Nim Game.
+         * Memory Usage: 12.8 MB, less than 50.00% of C# online submissions for Nim Game.
+         */
+        public bool CanWinNimV2(int n)
+        {
+            return n % 4 != 0;
         }
     }
 }
