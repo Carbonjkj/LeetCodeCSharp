@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using LeetCode.ProblemEZ;
+using LeetCode.ProblemMD;
 
 
 namespace LeetCode
@@ -9,7 +10,7 @@ namespace LeetCode
     {
         static void Main()
         {
-            IProblem problem = new Problem292();
+            IProblem problem = new Problem11();
             var watch = new Stopwatch();
             watch.Start();
             problem.run();
