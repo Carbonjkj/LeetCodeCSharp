@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using LeetCode.Tools;
 
 namespace LeetCode.ProblemMD
 {
@@ -67,7 +71,7 @@ namespace LeetCode.ProblemMD
         }
     }
 
-    // 6. ZigZag Conversion
+    // 6. ZigZag Conversion todo optimize
     public class Problem6 : IProblem
     {
         /*
@@ -137,7 +141,7 @@ namespace LeetCode.ProblemMD
             Console.WriteLine($"numRows: {numRows}, numCols: {numCols} \nS:\n{retval}");
             return retval;
         }
-    } //todo:
+    }
 
     // 8. String to Integer (atoi)
     public class Problem8 : IProblem
@@ -259,7 +263,7 @@ namespace LeetCode.ProblemMD
         }
     }
 
-    // 12. Integer to Roman
+    // 12. Integer to Roman todo optimize
     public class Problem12 : IProblem
     {
         /*
@@ -343,7 +347,7 @@ namespace LeetCode.ProblemMD
             return roman;
         }
 
-    }  // todo: 
+    }
 
     // 15. 3Sum
     public class Problem15 : IProblem
@@ -355,26 +359,41 @@ namespace LeetCode.ProblemMD
          *
          * The solution set must not contain duplicate triplets.
          */
+
         public void run()
         {
-            var list = ThreeSum(new[] { -1, 0, 1, 2, -1, -4 });
-            foreach (var l in list)
-            {
-                Console.WriteLine(string.Join(" ", l));
-            }
+            int[] nums = Generators.RandomIntArray(1000);
+            Console.WriteLine(ThreeSumV2(nums).Count == ThreeSumV3(nums).Count);
+            //var list = ThreeSum(nums);
+
+
+
+            // Print
+            //foreach (var l in list)
+            //{
+            //    Console.WriteLine(string.Join(" ", l));
+            //}
         }
+
         /*
          * Runtime: 4008 ms, faster than 7.33% of C# online submissions for 3Sum.
          * Memory Usage: 52 MB, less than 5.66% of C# online submissions for 3Sum.
          */
 
-        // todo: Is O(n^2) so slow?
         public IList<IList<int>> ThreeSum(int[] nums)
         {
             List<IList<int>> list = new List<IList<int>>();
             HashSet<string> listSet = new HashSet<string>();
+            var watch = new Stopwatch();
+            int k = 0;
             for (int i = 0; i < nums.Length; i++)
             {
+                if (i % 100 == 0)
+                {
+                    watch.Stop();
+                    Console.WriteLine("Time for " + 100 * k++ + ": " + watch.Elapsed + " Found: " + list.Count);
+                    watch.Restart();
+                }
                 list.AddRange(TwoSum(nums, i, -nums[i], ref listSet));
             }
             return list;
@@ -403,9 +422,371 @@ namespace LeetCode.ProblemMD
             return list;
         }
 
+        /*
+         * Runtime: 712 ms, faster than 27.26% of C# online submissions for 3Sum.
+         * Memory Usage: 51.2 MB, less than 5.66% of C# online submissions for 3Sum.
+         */
+        // todo: Improve filter more
         public IList<IList<int>> ThreeSumV2(int[] nums)
         {
-            return null;
+            HashSet<int> filter = new HashSet<int>();
+            HashSet<string> dupSet = new HashSet<string>();
+            List<IList<int>> list = new List<IList<int>>();
+            var watch = new Stopwatch();
+            int k = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (i % 100 == 0)
+                {
+                    watch.Stop();
+                    Console.WriteLine("Time for " + 100 * k++ + ": " + watch.Elapsed + " Found: " + list.Count);
+                    watch.Restart();
+                }
+                if (filter.Add(nums[i]))
+                {
+                    list.AddRange(TwoSumV2(nums, i, -nums[i], ref dupSet));
+                }
+            }
+            return list;
         }
+        public IList<IList<int>> TwoSumV2(int[] nums, int start, int target, ref HashSet<string> dupSet)
+        {
+            HashSet<int> set = new HashSet<int>();
+            IList<IList<int>> list = new List<IList<int>>();
+            for (int i = start + 1; i < nums.Length; i++)
+            {
+                if (set.Contains(nums[i]))
+                {
+                    var li = new List<int>() { -target, nums[i], target - nums[i] };
+                    li.Sort(); // O(1) because n is always 3
+                    if (dupSet.Add(string.Join(";", li)))
+                    {
+                        list.Add(li);
+                    }
+                }
+                else
+                {
+                    set.Add(target - nums[i]);
+                }
+            }
+
+            return list;
+        }
+
+
+        // Use sorted array take O(nlogn) to O(n^2)
+        /*
+         * Runtime: 312 ms, faster than 94.66% of C# online submissions for 3Sum.
+         * Memory Usage: 34.3 MB, less than 93.40% of C# online submissions for 3Sum.
+         */
+        public IList<IList<int>> ThreeSumV3(int[] nums)
+        {
+            List<IList<int>> list = new List<IList<int>>();
+            Array.Sort(nums);
+            var watch = new Stopwatch();
+            for (int i = 0; i < nums.Length;)
+            {
+                if (i % 100 == 0)
+                {
+                    watch.Stop();
+                    Console.WriteLine("Time for " + i + ": " + watch.Elapsed + " Found: " + list.Count);
+                    watch.Restart();
+                }
+                int start = i + 1, stop = nums.Length - 1, target = -nums[i];
+                while (start < stop)
+                {
+                    if (nums[start] + nums[stop] == target)
+                    {
+                        list.Add(new List<int>() { nums[i], nums[start], nums[stop] });
+                        while (start < stop && nums[start] == nums[++start]) ;
+                        while (start < stop && nums[stop] == nums[--stop]) ;
+                    }
+                    else if (nums[start] + nums[stop] > target)
+                        while (start < stop && nums[stop] == nums[--stop]) ;
+                    else
+                        while (start < stop && nums[start] == nums[++start]) ;
+                }
+
+                while (++i < nums.Length && nums[i] == -target)
+                {
+                    ;
+                }
+            }
+            return list;
+        }
+    }
+
+    // 16. 3Sum Closest
+    public class Problem16 : IProblem
+    {
+        /*
+         * Given an array nums of n integers and an integer target, find three integers in nums such that the sum is closest to target. Return the sum of the three integers. You may assume that each input would have exactly one solution.
+         *
+         * Example:
+         *
+         * Given array nums = [-1, 2, 1, -4], and target = 1.
+         *
+         * The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
+         */
+        public void run()
+        {
+            var random = new Random();
+            int length = 10000;
+            var fileName = "nums" + length + ".txt";
+            var nums = new int[length];
+
+            // Create File;
+            //for (int i = 0; i < length; i++)
+            //{
+            //    nums[i] = random.Next(-length, length);
+            //}
+            //File.WriteAllText(fileName, string.Join(";", nums));
+
+            // Read File;
+            var text = File.ReadAllText(fileName);
+            var numStrs = text.Split(';');
+            for (int i = 0; i < length; i++)
+            {
+                nums[i] = Convert.ToInt32(numStrs[i]);
+            }
+            //var list = ThreeSum(nums);
+            //nums = new int[] { -1, -5, -3, -4, 2, -2 };
+            int target = 7000;
+            ThreeSumClosest(nums, target);
+        }
+        /*
+         * Runtime: 116 ms, faster than 73.06% of C# online submissions for 3Sum Closest.
+         * Memory Usage: 22.5 MB, less than 100.00% of C# online submissions for 3Sum Closest.
+         */
+        public int ThreeSumClosest(int[] nums, int target)
+        {
+            if (nums.Length <= 3) return nums.Sum();
+            Array.Sort(nums);
+            int closest = nums[0] + nums[1] + nums[2];
+            for (int i = 0; i < nums.Length;)
+            {
+                int old = target - nums[i], start = i + 1, stop = nums.Length - 1;
+                while (start < stop)
+                {
+                    if (nums[start] + nums[stop] == old)
+                    {
+                        Console.WriteLine($"new combination find: {target - old},{nums[start]},{nums[stop]} :{closest}");
+                        return target;
+                    }
+                    if (nums[start] + nums[stop] < old)
+                    {
+                        int s = old - nums[start] - nums[stop];
+                        if (s < Math.Abs(closest - target))
+                        {
+                            closest = target - s;
+                            Console.WriteLine($"new combination find: {target - old},{nums[start]},{nums[stop]} :{closest}");
+                        }
+                        while (start < stop && nums[start] == nums[++start]) ;
+                    }
+                    else
+                    {
+                        int s = nums[start] + nums[stop] - old;
+                        if (s < Math.Abs(closest - target))
+                        {
+                            closest = target + s;
+                            Console.WriteLine($"new combination find: {target - old},{nums[start]},{nums[stop]} :{closest}");
+                        }
+                        while (start < stop && nums[stop] == nums[--stop]) ;
+                    }
+                }
+                while (++i < nums.Length && nums[i] == target - old) ;
+            }
+            return closest;
+        }
+
+
+    }
+
+    // 17. Letter Combinations of a Phone Number
+    public class Problem17 : IProblem
+    {
+        /*
+         * Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent.
+         *
+         * A mapping of digit to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+         *
+         * Note:
+         *
+         * Although the above answer is in lexicographical order, your answer could be in any order you want.
+         */
+
+        public void run()
+        {
+            Console.WriteLine(string.Join("\n", LetterCombinations("235927")));
+        }
+
+        /*
+         * Runtime: 264 ms, faster than 78.88% of C# online submissions for Letter Combinations of a Phone Number.
+         * Memory Usage: 29.3 MB, less than 36.15% of C# online submissions for Letter Combinations of a Phone 
+         */
+        public IList<string> LetterCombinations(string digits)
+        {
+            var list = new List<string>();
+            foreach (var digit in digits)
+            {
+                Combination(ref list, GetChars(digit));
+            }
+
+            return list;
+        }
+
+        private char[] GetChars(char digit)
+        {
+            switch (digit)
+            {
+                case '2':
+                    return new char[] { 'a', 'b', 'c' };
+                case '3':
+                    return new char[] { 'd', 'e', 'f' };
+                case '4':
+                    return new char[] { 'g', 'h', 'i' };
+                case '5':
+                    return new char[] { 'j', 'k', 'l' };
+                case '6':
+                    return new char[] { 'm', 'n', 'o' };
+                case '7':
+                    return new char[] { 'p', 'q', 'r', 's' };
+                case '8':
+                    return new char[] { 't', 'u', 'v' };
+                case '9':
+                    return new char[] { 'w', 'x', 'y', 'z' };
+                default:
+                    return null;
+            }
+        }
+
+        public void Combination(ref List<string> list, char[] chars)
+        {
+            if (chars == null) return;
+            if (list.Count == 0)
+            {
+                foreach (var c in chars)
+                {
+                    list.Add(c + "");
+                }
+                return;
+            }
+
+            int len = list.Count;
+            for (int i = 0; i < len; i++)
+            {
+                for (int j = chars.Length - 1; j >= 0; j--)
+                {
+                    if (j == 0)
+                    {
+                        list[i] += chars[j];
+                    }
+                    else
+                    {
+                        list.Add(list[i] + chars[j]);
+                    }
+                }
+            }
+        }
+    }
+
+    // 18. 4Sum
+    public class Problem18 : IProblem
+    {
+        /*
+         * Given an array nums of n integers and an integer target, are there elements a, b, c, and d in nums such that a + b + c + d = target? Find all unique quadruplets in the array which gives the sum of target.
+         *
+         * Note:
+         *
+         * The solution set must not contain duplicate quadruplets.
+         */
+        public void run()
+        {
+            var nums = Generators.RandomIntArray(100);
+            int target = 2;
+            FourSum(nums, target);
+        }
+        public IList<IList<int>> FourSum(int[] nums, int target)
+        {
+            int len = nums.Length;
+            var list = new List<IList<int>>();
+            if (len < 4) return list;
+            Array.Sort(nums);
+            int max = nums[len - 4] + nums[len - 3] + nums[len - 2] + nums[len - 1];
+            int min = nums[0] + nums[1] + nums[2] + nums[3];
+            if (target > max || target < min) return list;
+            for (int i = min; i <= target / 2; i++)
+            {
+                var l1 = TwoSum(nums, i, null);
+                foreach (var l in l1)
+                {
+                    var l2 = TwoSum(nums, target - i, l.ToArray());
+                    Console.WriteLine($"i: {i}, rest {target - i}, first ({l1[0]},{l1[1]}), rest {l2.Count}");
+                }
+            }
+
+            return list;
+        }
+
+        public IList<IList<int>> TwoSum(int[] nums, int target, int[] exception)
+        {
+
+            var list = new List<IList<int>>();
+            int start = 0, stop = nums.Length - 1;
+            while (start < stop)
+            {
+                if (exception != null && exception.Contains(start))
+                {
+                    start++;
+                    continue;
+                }
+                if (exception != null && exception.Contains(stop))
+                {
+                    stop--;
+                    continue;
+                }
+                if (nums[start] + nums[stop] == target)
+                {
+                    list.Add(new List<int>() { nums[start], nums[stop] });
+                    while (start < stop && nums[start] == nums[++start])
+                    {
+                        if (exception != null && exception.Contains(start))
+                        {
+                            start++;
+                        }
+                    }
+
+                    while (start < stop && nums[stop] == nums[--stop])
+                    {
+                        if (exception != null && exception.Contains(stop))
+                        {
+                            stop++;
+                        }
+                    }
+                }
+                else if (nums[start] + nums[stop] < target)
+                {
+                    while (start < stop && nums[start] == nums[++start])
+                    {
+                        if (exception != null && exception.Contains(start))
+                        {
+                            start++;
+                        }
+                    }
+                }
+                else
+                {
+                    while (start < stop && nums[stop] == nums[--stop])
+                    {
+                        if (exception != null && exception.Contains(stop))
+                        {
+                            stop--;
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+
     }
 }
