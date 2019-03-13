@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LeetCode.ProblemMD
@@ -283,13 +284,128 @@ namespace LeetCode.ProblemMD
          */
         public void run()
         {
-
+            var random = new Random();
+            for (int i = 0; i < 20; i++)
+            {
+                IntToRoman(random.Next(1000, 4000));
+            }
         }
-
+        /*
+         * Runtime: 100 ms, faster than 99.67% of C# online submissions for Integer to Roman.
+         * Memory Usage: 24.4 MB, less than 30.44% of C# online submissions for Integer to Roman.
+         */
         public string IntToRoman(int num)
         {
-
+            Console.WriteLine("input:   " + num);
+            int a = 0, b = 0;
+            char[] tecken = new char[] { 'I', 'V', 'X', 'L', 'C', 'D', 'M', ' ' };
+            string roman = "";
+            while (num > 0)
+            {
+                a = num % 10;
+                string s = tecken[2 * b] + "", m = tecken[2 * b + 1] + "";
+                switch (a)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        roman = s + roman;
+                        break;
+                    case 2:
+                        roman = s + s + roman;
+                        break;
+                    case 3:
+                        roman = s + s + s + roman;
+                        break;
+                    case 4:
+                        roman = s + m + roman;
+                        break;
+                    case 5:
+                        roman = m + roman;
+                        break;
+                    case 6:
+                        roman = m + s + roman;
+                        break;
+                    case 7:
+                        roman = m + s + s + roman;
+                        break;
+                    case 8:
+                        roman = m + s + s + s + roman;
+                        break;
+                    case 9:
+                        roman = s + tecken[2 * b + 2] + roman;
+                        break;
+                }
+                num = num / 10;
+                b++;
+            }
+            Console.WriteLine("output:  " + roman);
+            return roman;
         }
 
+    }  // todo: 
+
+    // 15. 3Sum
+    public class Problem15 : IProblem
+    {
+        /*
+         * Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
+         *
+         * Note:
+         *
+         * The solution set must not contain duplicate triplets.
+         */
+        public void run()
+        {
+            var list = ThreeSum(new[] { -1, 0, 1, 2, -1, -4 });
+            foreach (var l in list)
+            {
+                Console.WriteLine(string.Join(" ", l));
+            }
+        }
+        /*
+         * Runtime: 4008 ms, faster than 7.33% of C# online submissions for 3Sum.
+         * Memory Usage: 52 MB, less than 5.66% of C# online submissions for 3Sum.
+         */
+
+        // todo: Is O(n^2) so slow?
+        public IList<IList<int>> ThreeSum(int[] nums)
+        {
+            List<IList<int>> list = new List<IList<int>>();
+            HashSet<string> listSet = new HashSet<string>();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                list.AddRange(TwoSum(nums, i, -nums[i], ref listSet));
+            }
+            return list;
+        }
+        public IList<IList<int>> TwoSum(int[] nums, int start, int target, ref HashSet<string> listSet)
+        {
+            HashSet<int> set = new HashSet<int>();
+            IList<IList<int>> list = new List<IList<int>>();
+            for (int i = start + 1; i < nums.Length; i++)
+            {
+                if (set.Contains(nums[i]))
+                {
+                    var li = new List<int>() { -target, nums[i], target - nums[i] };
+                    li.Sort(); // O(1) because n is always 3
+                    if (listSet.Add(string.Join(";", li)))
+                    {
+                        list.Add(li);
+                    }
+                }
+                else
+                {
+                    set.Add(target - nums[i]);
+                }
+            }
+
+            return list;
+        }
+
+        public IList<IList<int>> ThreeSumV2(int[] nums)
+        {
+            return null;
+        }
     }
 }

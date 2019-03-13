@@ -7,6 +7,48 @@ using LeetCode.Objects;
 
 namespace LeetCode.ProblemEZ
 {
+    // 1. Two Sum
+    public class Problem1 : IProblem
+    {
+        /*
+         * Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+         *
+         * You may assume that each input would have exactly one solution, and you may not use the same element twice.
+         */
+        public void run()
+        {
+
+        }
+        /*
+         * Runtime: 248 ms, faster than 99.47% of C# online submissions for Two Sum.
+         * Memory Usage: 29.1 MB, less than 46.69% of C# online submissions for Two 
+         */
+        public int[] TwoSum(int[] nums, int target)
+        {
+            HashSet<int> set = new HashSet<int>();
+            int first = 0, last = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (set.Contains(nums[i]))
+                {
+                    last = i;
+                    break;
+                }
+                set.Add(target - nums[i]);
+            }
+
+            for (int i = 0; i < last; i++)
+            {
+                if (nums[i] == target - nums[last])
+                {
+                    first = i;
+                }
+            }
+            return new[] { first, last };
+
+        }
+    }
+
     // 27. Remove Element
     public class Problem27 : IProblem
     {

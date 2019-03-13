@@ -1,0 +1,7 @@
+C:\Users\Kaijun.BOTEK\Documents\Python\LeetCodeCSharp\LeetConsole\bin\Debug\LeetConsole.exe.config
+C:\Users\Kaijun.BOTEK\Documents\Python\LeetCodeCSharp\LeetConsole\bin\Debug\LeetConsole.exe
+C:\Users\Kaijun.BOTEK\Documents\Python\LeetCodeCSharp\LeetConsole\bin\Debug\LeetConsole.pdb
+C:\Users\Kaijun.BOTEK\Documents\Python\LeetCodeCSharp\LeetConsole\obj\Debug\LeetConsole.csprojAssemblyReference.cache
+C:\Users\Kaijun.BOTEK\Documents\Python\LeetCodeCSharp\LeetConsole\obj\Debug\LeetConsole.csproj.CoreCompileInputs.cache
+C:\Users\Kaijun.BOTEK\Documents\Python\LeetCodeCSharp\LeetConsole\obj\Debug\LeetConsole.exe
+C:\Users\Kaijun.BOTEK\Documents\Python\LeetCodeCSharp\LeetConsole\obj\Debug\LeetConsole.pdb
