@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using LeetCode.Objects;
 using LeetCode.Tools;
 
 namespace LeetCode.ProblemMD
@@ -90,6 +91,7 @@ namespace LeetCode.ProblemMD
         {
             Convert("01234567890123456789", 4);
         }
+
         /*
          * Runtime: 172 ms, faster than 17.79% of C# online submissions for ZigZag Conversion.
          * Memory Usage: 34.2 MB, less than 5.95% of C# online submissions for ZigZag Conversion.
@@ -110,6 +112,7 @@ namespace LeetCode.ProblemMD
                 if (ex > numRows - 2) ex = numRows - 1;
                 numCols = 1 + numCols * (numRows - 1) + ex;
             }
+
             char[,] charMatrix = new char[numRows, numCols];
             int k = 0;
             for (int j = 0; j < numCols; j++)
@@ -138,6 +141,7 @@ namespace LeetCode.ProblemMD
                 }
 
             }
+
             Console.WriteLine($"numRows: {numRows}, numCols: {numCols} \nS:\n{retval}");
             return retval;
         }
@@ -166,6 +170,7 @@ namespace LeetCode.ProblemMD
         {
             Console.WriteLine(MyAtoi("-91283472332"));
         }
+
         /*
          * Runtime: 76 ms, faster than 100.00% of C# online submissions for String to Integer (atoi).
          * Memory Usage: 22.7 MB, less than 94.17% of C# online submissions for String to Integer (atoi).
@@ -179,6 +184,7 @@ namespace LeetCode.ProblemMD
             {
                 start++;
             }
+
             // check if signed
             if (start >= str.Length) return 0;
             if (str[start] == 43 || str[start] == 45)
@@ -186,13 +192,15 @@ namespace LeetCode.ProblemMD
                 negative = str[start] == 45;
                 start++;
             }
+
             int sum = 0;
             while (start < str.Length)
             {
                 if (str[start] >= 48 && str[start] <= 57)
                 {
                     // Check overflow
-                    if (sum > 214748364 || sum == 214748364 && str[start] - 48 > 7) return negative ? int.MinValue : int.MaxValue;
+                    if (sum > 214748364 || sum == 214748364 && str[start] - 48 > 7)
+                        return negative ? int.MinValue : int.MaxValue;
                     sum = str[start] - 48 + sum * 10;
                     start++;
                 }
@@ -218,6 +226,7 @@ namespace LeetCode.ProblemMD
         {
             Console.WriteLine(MaxArea(new[] { 3, 2, 1, 3 }));
         }
+
         /*
          * Runtime: 1728 ms, faster than 8.29% of C# online submissions for Container With Most Water.
          * Memory Usage: 25.7 MB, less than 7.63% of C# online submissions for Container With Most Water.
@@ -237,6 +246,7 @@ namespace LeetCode.ProblemMD
 
             return curMax;
         }
+
         /*
          * Runtime: 104 ms, faster than 95.89% of C# online submissions for Container With Most Water.
          * Memory Usage: 25.3 MB, less than 93.13% of C# online submissions for Container With Most Water.
@@ -294,6 +304,7 @@ namespace LeetCode.ProblemMD
                 IntToRoman(random.Next(1000, 4000));
             }
         }
+
         /*
          * Runtime: 100 ms, faster than 99.67% of C# online submissions for Integer to Roman.
          * Memory Usage: 24.4 MB, less than 30.44% of C# online submissions for Integer to Roman.
@@ -340,9 +351,11 @@ namespace LeetCode.ProblemMD
                         roman = s + tecken[2 * b + 2] + roman;
                         break;
                 }
+
                 num = num / 10;
                 b++;
             }
+
             Console.WriteLine("output:  " + roman);
             return roman;
         }
@@ -394,10 +407,13 @@ namespace LeetCode.ProblemMD
                     Console.WriteLine("Time for " + 100 * k++ + ": " + watch.Elapsed + " Found: " + list.Count);
                     watch.Restart();
                 }
+
                 list.AddRange(TwoSum(nums, i, -nums[i], ref listSet));
             }
+
             return list;
         }
+
         public IList<IList<int>> TwoSum(int[] nums, int start, int target, ref HashSet<string> listSet)
         {
             HashSet<int> set = new HashSet<int>();
@@ -442,13 +458,16 @@ namespace LeetCode.ProblemMD
                     Console.WriteLine("Time for " + 100 * k++ + ": " + watch.Elapsed + " Found: " + list.Count);
                     watch.Restart();
                 }
+
                 if (filter.Add(nums[i]))
                 {
                     list.AddRange(TwoSumV2(nums, i, -nums[i], ref dupSet));
                 }
             }
+
             return list;
         }
+
         public IList<IList<int>> TwoSumV2(int[] nums, int start, int target, ref HashSet<string> dupSet)
         {
             HashSet<int> set = new HashSet<int>();
@@ -492,6 +511,7 @@ namespace LeetCode.ProblemMD
                     Console.WriteLine("Time for " + i + ": " + watch.Elapsed + " Found: " + list.Count);
                     watch.Restart();
                 }
+
                 int start = i + 1, stop = nums.Length - 1, target = -nums[i];
                 while (start < stop)
                 {
@@ -502,9 +522,11 @@ namespace LeetCode.ProblemMD
                         while (start < stop && nums[stop] == nums[--stop]) ;
                     }
                     else if (nums[start] + nums[stop] > target)
-                        while (start < stop && nums[stop] == nums[--stop]) ;
+                        while (start < stop && nums[stop] == nums[--stop])
+                            ;
                     else
-                        while (start < stop && nums[start] == nums[++start]) ;
+                        while (start < stop && nums[start] == nums[++start])
+                            ;
                 }
 
                 while (++i < nums.Length && nums[i] == -target)
@@ -512,6 +534,7 @@ namespace LeetCode.ProblemMD
                     ;
                 }
             }
+
             return list;
         }
     }
@@ -549,11 +572,13 @@ namespace LeetCode.ProblemMD
             {
                 nums[i] = Convert.ToInt32(numStrs[i]);
             }
+
             //var list = ThreeSum(nums);
             //nums = new int[] { -1, -5, -3, -4, 2, -2 };
             int target = 7000;
             ThreeSumClosest(nums, target);
         }
+
         /*
          * Runtime: 116 ms, faster than 73.06% of C# online submissions for 3Sum Closest.
          * Memory Usage: 22.5 MB, less than 100.00% of C# online submissions for 3Sum Closest.
@@ -570,17 +595,21 @@ namespace LeetCode.ProblemMD
                 {
                     if (nums[start] + nums[stop] == old)
                     {
-                        Console.WriteLine($"new combination find: {target - old},{nums[start]},{nums[stop]} :{closest}");
+                        Console.WriteLine(
+                            $"new combination find: {target - old},{nums[start]},{nums[stop]} :{closest}");
                         return target;
                     }
+
                     if (nums[start] + nums[stop] < old)
                     {
                         int s = old - nums[start] - nums[stop];
                         if (s < Math.Abs(closest - target))
                         {
                             closest = target - s;
-                            Console.WriteLine($"new combination find: {target - old},{nums[start]},{nums[stop]} :{closest}");
+                            Console.WriteLine(
+                                $"new combination find: {target - old},{nums[start]},{nums[stop]} :{closest}");
                         }
+
                         while (start < stop && nums[start] == nums[++start]) ;
                     }
                     else
@@ -589,13 +618,17 @@ namespace LeetCode.ProblemMD
                         if (s < Math.Abs(closest - target))
                         {
                             closest = target + s;
-                            Console.WriteLine($"new combination find: {target - old},{nums[start]},{nums[stop]} :{closest}");
+                            Console.WriteLine(
+                                $"new combination find: {target - old},{nums[start]},{nums[stop]} :{closest}");
                         }
+
                         while (start < stop && nums[stop] == nums[--stop]) ;
                     }
                 }
+
                 while (++i < nums.Length && nums[i] == target - old) ;
             }
+
             return closest;
         }
 
@@ -669,6 +702,7 @@ namespace LeetCode.ProblemMD
                 {
                     list.Add(c + "");
                 }
+
                 return;
             }
 
@@ -702,91 +736,265 @@ namespace LeetCode.ProblemMD
          */
         public void run()
         {
-            var nums = Generators.RandomIntArray(100);
-            int target = 2;
+            var nums = Generators.RandomIntArray(500);
+            int target = 0;
             FourSum(nums, target);
         }
+
+        /*
+         * Runtime: 1700 ms, faster than 5.14% of C# online submissions for 4Sum.
+         * Memory Usage: 30.6 MB, less than 33.33% of C# online submissions for 4Sum.
+         */
         public IList<IList<int>> FourSum(int[] nums, int target)
         {
-            int len = nums.Length;
-            var list = new List<IList<int>>();
-            if (len < 4) return list;
+            IList<IList<int>> list = new List<IList<int>>();
             Array.Sort(nums);
-            int max = nums[len - 4] + nums[len - 3] + nums[len - 2] + nums[len - 1];
-            int min = nums[0] + nums[1] + nums[2] + nums[3];
-            if (target > max || target < min) return list;
-            for (int i = min; i <= target / 2; i++)
-            {
-                var l1 = TwoSum(nums, i, null);
-                foreach (var l in l1)
-                {
-                    var l2 = TwoSum(nums, target - i, l.ToArray());
-                    Console.WriteLine($"i: {i}, rest {target - i}, first ({l1[0]},{l1[1]}), rest {l2.Count}");
-                }
-            }
-
+            var sw = new Stopwatch();
+            sw.Start();
+            TargetSum(nums, -1, 4, target, ref list);
+            sw.Stop();
+            Console.WriteLine(list.Count + " time: " + sw.Elapsed);
+            list = new List<IList<int>>();
+            sw.Restart();
+            TargetSumV2(nums, -1, 4, target, ref list);
+            sw.Stop();
+            Console.WriteLine(list.Count + " time: " + sw.Elapsed);
             return list;
         }
 
-        public IList<IList<int>> TwoSum(int[] nums, int target, int[] exception)
+        private static int counter = 0;
+
+        public bool TargetSum(int[] nums, int start, int level, int target, ref IList<IList<int>> list)
         {
-
-            var list = new List<IList<int>>();
-            int start = 0, stop = nums.Length - 1;
-            while (start < stop)
+            if (level == 0) return false;
+            for (int i = start + 1; i < nums.Length;)
             {
-                if (exception != null && exception.Contains(start))
+                counter++;
+                int tmp = nums[i];
+                if (level == 1 && tmp == target)
                 {
-                    start++;
-                    continue;
-                }
-                if (exception != null && exception.Contains(stop))
-                {
-                    stop--;
-                    continue;
-                }
-                if (nums[start] + nums[stop] == target)
-                {
-                    list.Add(new List<int>() { nums[start], nums[stop] });
-                    while (start < stop && nums[start] == nums[++start])
-                    {
-                        if (exception != null && exception.Contains(start))
-                        {
-                            start++;
-                        }
-                    }
-
-                    while (start < stop && nums[stop] == nums[--stop])
-                    {
-                        if (exception != null && exception.Contains(stop))
-                        {
-                            stop++;
-                        }
-                    }
-                }
-                else if (nums[start] + nums[stop] < target)
-                {
-                    while (start < stop && nums[start] == nums[++start])
-                    {
-                        if (exception != null && exception.Contains(start))
-                        {
-                            start++;
-                        }
-                    }
+                    //Console.WriteLine($"Found {target} @ loop {counter}");
+                    list.Add(new List<int>() { tmp });
+                    return true;
                 }
                 else
                 {
-                    while (start < stop && nums[stop] == nums[--stop])
+                    if (TargetSum(nums, i, level - 1, target - nums[i], ref list))
                     {
-                        if (exception != null && exception.Contains(stop))
+                        foreach (var li in list)
                         {
-                            stop--;
+                            if (li.Count == level - 1) li.Add(tmp);
+                            //Console.WriteLine("(" + string.Join(",", li) + ")");
                         }
                     }
+
+                }
+
+                while (++i < nums.Length && nums[i] == tmp) ;
+            }
+
+            return true;
+        }
+
+        /*
+         * Runtime: 292 ms, faster than 89.12% of C# online submissions for 4Sum.
+         * Memory Usage: 30.5 MB, less than 41.67% of C# online submissions for 4Sum.
+         */
+        public bool TargetSumV2(int[] nums, int start, int level, int target, ref IList<IList<int>> list)
+        {
+            if (level == 0) return false;
+            if (level == 2)
+            {
+                int begin = start + 1, stop = nums.Length - 1;
+                while (begin < stop)
+                {
+                    if (nums[begin] + nums[stop] == target)
+                    {
+                        list.Add(new List<int>() { nums[begin], nums[stop] });
+                        while (begin < stop && nums[begin] == nums[++begin]) ;
+                        while (begin < stop && nums[stop] == nums[--stop]) ;
+                    }
+                    else if (nums[begin] + nums[stop] > target)
+                        while (begin < stop && nums[stop] == nums[--stop])
+                            ;
+                    else
+                        while (begin < stop && nums[begin] == nums[++begin])
+                            ;
+                }
+
+                return true;
+            }
+
+            for (int i = start + 1; i < nums.Length;)
+            {
+                counter++;
+                int tmp = nums[i];
+                if (TargetSum(nums, i, level - 1, target - nums[i], ref list))
+                {
+                    foreach (var li in list)
+                    {
+                        if (li.Count == level - 1) li.Add(tmp);
+                        //Console.WriteLine("(" + string.Join(",", li) + ")");
+                    }
+                }
+
+                while (++i < nums.Length && nums[i] == tmp) ;
+            }
+
+            return true;
+        }
+
+    }
+
+    // 19. Remove Nth Node From End of List
+    public class Problem19 : IProblem
+    {
+        /*
+         * Given a linked list, remove the n-th node from the end of list and return its head.
+         *
+         * Example:
+         *
+         * Given linked list: 1->2->3->4->5, and n = 2.
+         *
+         * After removing the second node from the end, the linked list becomes 1->2->3->5.
+         * Note:
+         *
+         * Given n will always be valid.
+         *
+         * Follow up:
+         *
+         * Could you do this in one pass?
+         */
+        public void run()
+        {
+            var ln = new ListNode(1);
+            ln.next = new ListNode(2);
+            RemoveNthFromEnd(ln, 2);
+        }
+
+        /*
+         * Runtime: 88 ms, faster than 100.00% of C# online submissions for Remove Nth Node From End of List.
+         * Memory Usage: 22.2 MB, less than 97.47% of C# online submissions for Remove Nth Node From End of List.
+         */
+        public ListNode RemoveNthFromEnd(ListNode head, int n)
+        {
+            if (head == null || head.next == null) return null;
+            var saved = head;
+            var tempNode = head;
+            int cnt = 0;
+
+            while (head.next != null)
+            {
+                if (cnt >= n)
+                {
+                    tempNode = tempNode.next;
+                }
+
+
+                cnt++;
+                head = head.next;
+            }
+
+            if (cnt == n - 1) return saved.next;
+            tempNode.next = n == 1 ? null : tempNode.next.next;
+            return saved;
+        }
+    }
+
+    // 22. Generate Parentheses
+    public class Problem22 : IProblem
+    {
+        /*
+         * Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+         *
+         * For example, given n = 3, a solution set is:
+         * [
+         * "((()))",
+         * "(()())",
+         * "(())()",
+         * "()(())",
+         * "()()()"
+         * ]
+         */
+
+        public void run()
+        {
+            GenerateParenthesis(4);
+        }
+
+        // Todo fix this idea  (())(()) doesnt work.
+        public IList<string> GenerateParenthesis(int n)
+        {
+            var hash = new HashSet<string>();
+            int k = n;
+            while (k > 1)
+            {
+                string sides = "";
+                for (int i = 0; i < n - k; i++)
+                {
+                    sides = "(" + sides + ")";
+                }
+                var pn = new ParenthesisNode(k--);
+                var list = GetBranch(pn);
+                foreach (var str in list)
+                {
+                    hash.Add(str + sides);
                 }
             }
+
+
+            //Console.WriteLine(string.Join("\n", hash));
+            return hash.ToList();
+
+        }
+
+        public List<string> GetBranch(ParenthesisNode pn)
+        {
+            var list = new List<string>();
+            if (pn.Left == null || pn.Inner == null || pn.Right == null) return new List<string>() { "()" };
+            foreach (var str in GetBranch(pn.Left))
+            {
+                list.Add(str + "()");
+            }
+            foreach (var str in GetBranch(pn.Right))
+            {
+                list.Add("()" + str);
+            }
+            foreach (var str in GetBranch(pn.Inner))
+            {
+                list.Add("(" + str + ")");
+            }
+
+
+
             return list;
         }
+
+        public class ParenthesisNode
+        {
+            public ParenthesisNode Left { get; set; }
+            public ParenthesisNode Inner { get; set; }
+            public ParenthesisNode Right { get; set; }
+
+            public ParenthesisNode(int n)
+            {
+                if (--n <= 0)
+                {
+                    Left = null;
+                    Right = null;
+                    Inner = null;
+                }
+                else
+                {
+                    Left = new ParenthesisNode(n);
+                    Right = new ParenthesisNode(n);
+                    Inner = new ParenthesisNode(n);
+                }
+
+            }
+        }
+
+        // V2
 
     }
 }
