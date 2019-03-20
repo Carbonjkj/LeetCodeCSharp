@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -919,7 +920,8 @@ namespace LeetCode.ProblemMD
 
         public void run()
         {
-            GenerateParenthesis(4);
+            var list = GenerateParenthesisV2(3);
+            Console.WriteLine(string.Join("\n", list));
         }
 
         // Todo fix this idea  (())(()) doesnt work.
@@ -964,9 +966,6 @@ namespace LeetCode.ProblemMD
             {
                 list.Add("(" + str + ")");
             }
-
-
-
             return list;
         }
 
@@ -995,6 +994,271 @@ namespace LeetCode.ProblemMD
         }
 
         // V2
+        /*
+         * Runtime: 244 ms, faster than 95.69% of C# online submissions for Generate Parentheses.
+         * Memory Usage: 31.2 MB, less than 21.31% of C# online submissions for Generate Parentheses.
+         */
+        public IList<string> GenerateParenthesisV2(int n)
+        {
+            var list = new List<string>();
+            GenerateParenthesisSub(ref list, "", 0, 0, n);
+            return list;
+        }
+
+        public void GenerateParenthesisSub(ref List<string> list, string str, int open, int close, int n)
+        {
+            if (str.Length == n * 2)
+            {
+                list.Add(str);
+                return;
+            }
+
+            if (open < n)
+            {
+                Console.WriteLine(str + "(");
+                GenerateParenthesisSub(ref list, str + "(", open + 1, close, n);
+            }
+
+            if (close < open)
+            {
+                Console.WriteLine(str + ")");
+                GenerateParenthesisSub(ref list, str + ")", open, close + 1, n);
+            }
+        }
+
 
     }
+
+    // 24. Swap Nodes in Pairs
+    public class Problem24 : IProblem
+    {
+        /*
+         * Given a linked list, swap every two adjacent nodes and return its head.
+         *
+         * You may not modify the values in the list's nodes, only nodes itself may be changed.
+         * Example:
+         *
+         * Given 1->2->3->4, you should return the list as 2->1->4->3.
+         *
+         */
+        public void run()
+        {
+            var nod = new ListNode(1);
+            nod.next = new ListNode(2);
+            nod.next.next = new ListNode(3);
+            nod.next.next.next = new ListNode(4);
+            SwapPairs(nod);
+        }
+        /*
+         * Runtime: 104 ms, faster than 69.35% of C# online submissions for Swap Nodes in Pairs.
+         * Memory Usage: 22 MB, less than 25.81% of C# online submissions for Swap Nodes in Pairs.
+         */
+        public ListNode SwapPairs(ListNode head)
+        {
+            if (head == null || head.next == null) return head;
+            int k = 0;
+            var newHead = head.next;
+            var temp = head;
+            while (head != null && head.next != null)
+            {
+                temp.next = head.next;
+                temp = head;
+                head = head.next;
+                temp.next = head.next;
+                head.next = temp;
+                head = temp.next;
+            }
+            return newHead;
+        }
+    }
+
+    // 29. Divide Two Integers todo: Not done yet.
+    public class Problem29 : IProblem
+    {
+        /*
+         * Given two integers dividend and divisor, divide two integers without using multiplication, division and mod operator.
+         *
+         * Return the quotient after dividing dividend by divisor.
+         *
+         * The integer division should truncate toward zero.
+         *
+         * Note:
+         *
+         * Both dividend and divisor will be 32-bit signed integers.
+         * The divisor will never be 0.
+         * Assume we are dealing with an environment which could only store integers within the 32-bit signed integer range: [−231,  231 − 1]. For the purpose of this problem, assume that your function returns 231 − 1 when the division result overflows.
+         *
+         */
+        public void run()
+        {
+            bool failed = false;
+            var rand = new Random();
+            int c = 2;
+            switch (c)
+            {
+                case 1:
+                    Console.WriteLine(Divide(2082257274, 1413922502));
+                    break;
+                case 2:
+                    while (!failed)
+                    {
+                        int a = rand.Next(Int32.MinValue, Int32.MaxValue);
+                        int b = rand.Next(1, 3);
+                        int std = a / b;
+                        int myd = Divide(a, b);
+                        failed = std != myd;
+                        Console.WriteLine($"{a} , {b} = {std}:{myd}, {!failed}");
+                    }
+                    break;
+            }
+
+        }
+        /*
+         * Int32.MinValue > Int32.MaxValue  make overflow
+         * Int32.MinValue/MaxValue divided by small divisor take long time.
+         */
+        public int Divide(int dividend, int divisor)
+        {
+            if (divisor == 1) return dividend;
+            if (divisor == -1) return dividend == Int32.MinValue ? Int32.MaxValue : -dividend;
+            bool positive = true;
+            if (divisor > 0)
+            {
+                positive = !positive;
+                divisor = -divisor;
+            }
+            if (dividend > 0)
+            {
+                positive = !positive;
+                dividend = -dividend;
+            }
+            int count = 0;
+            while (dividend < 0)
+            {
+                dividend -= divisor;
+                if (dividend <= 0) count++;
+            }
+            return positive ? count : -count;
+        }
+    }
+
+    // 31. Next Permutation
+    public class Problem31 : IProblem
+    {
+        /*
+         * Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.
+         *
+         * If such arrangement is not possible, it must rearrange it as the lowest possible order (ie, sorted in ascending order).
+         *
+         * The replacement must be in-place and use only constant extra memory.
+         *
+         * Here are some examples. Inputs are in the left-hand column and its corresponding outputs are in the right-hand column.
+         *
+         * 1,2,3 → 1,3,2
+         * 3,2,1 → 1,2,3
+         * 1,1,5 → 1,5,1
+         */
+        public void run()
+        {
+            NextPermutation(new[] { 1, 2, 3 });
+        }
+        /*
+         * Runtime: 248 ms, faster than 93.03% of C# online submissions for Next Permutation.
+         * Memory Usage: 29.5 MB, less than 76.74% of C# online submissions for Next Permutation.
+         */
+
+        /*
+         * 1. Iterate over every character, we will get the last value i (starting from the first character) that satisfies the given condition S[i] < S[i + 1]
+         * 2. Now, we will get the last value j such that S[i] < S[j]
+         * 3. We now interchange S[i] and S[j]. And for every character from i+1 till the end, we sort the characters. i.e., sort(S[i+1]..S[len(S) - 1])
+         */
+        public void NextPermutation(int[] nums)
+        {
+            var size = nums.Length;
+            int i = -1, j = 0;
+            for (int k = 0; k < size - 1; k++)
+            {
+                if (nums[k] < nums[k + 1]) i = k;
+            }
+
+            if (i == -1)
+            {
+                Reverse(ref nums, 0);
+                return;
+            }
+            for (int k = +1; k < size; k++)
+            {
+                if (nums[k] > nums[i]) j = k;
+            }
+
+            var temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = temp;
+            Reverse(ref nums, i + 1);
+            return;
+        }
+
+        public void Reverse(ref int[] nums, int start)
+        {
+            int stop = nums.Length - 1;
+            while (start < stop)
+            {
+                var temp = nums[start];
+                nums[start] = nums[stop];
+                nums[stop] = temp;
+                start++;
+                stop--;
+            }
+        }
+    }
+
+    // 33. Search in Rotated Sorted Array
+    public class Problem33 : IProblem
+    {
+        /*
+         * Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+         *
+         * (i.e., [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2]).
+         *
+         * You are given a target value to search. If found in the array return its index, otherwise return -1.
+         *
+         * You may assume no duplicate exists in the array.
+         *
+         * Your algorithm's runtime complexity must be in the order of O(log n).
+         */
+        public void run()
+        {
+            Console.WriteLine(Search(new int[] { 4, 5, 6, 7, 0, 1, 2 }, 6));
+        }
+        /*
+         * Runtime: 92 ms, faster than 99.89% of C# online submissions for Search in Rotated Sorted Array.
+         * Memory Usage: 22.5 MB, less than 87.39% of C# online submissions for Search in Rotated Sorted Array.
+         */
+        public int Search(int[] nums, int target)
+        {
+            if (nums.Length == 0) return -1;
+            return SearchSub(nums, 0, nums.Length - 1, target);
+        }
+
+        public int SearchSub(int[] nums, int start, int stop, int target)
+        {
+            if (nums[start] == target) return start;
+            if (nums[stop] == target) return stop;
+            if (stop - start <= 1) return -1;
+            if (nums[stop] > nums[start])
+            {
+                if (target > nums[stop]) return -1;
+                if (target < nums[start]) return -1;
+
+            }
+            var first = SearchSub(nums, start, (start + stop) / 2, target);
+            var last = SearchSub(nums, (start + stop) / 2, stop, target);
+            if (first != -1) return first;
+            if (last != -1) return last;
+            return -1;
+
+        }
+    }
+
+    //
 }
