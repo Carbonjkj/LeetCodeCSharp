@@ -1260,5 +1260,289 @@ namespace LeetCode.ProblemMD
         }
     }
 
-    //
+    // 34. Find First and Last Position of Element in Sorted Array todo: Fix O(log n)
+    public class Problem34 : IProblem
+    {
+        /*
+         * Given an array of integers nums sorted in ascending order, find the starting and ending position of a given target value.
+         *
+         * Your algorithm's runtime complexity must be in the order of O(log n).
+         *
+         * If the target is not found in the array, return [-1, -1].
+         */
+        public void run()
+        {
+        }
+        /*
+         * Runtime: 260 ms, faster than 75.81% of C# online submissions for Find First and Last Position of Element in Sorted Array.
+         * Memory Usage: 30.2 MB, less than 66.15% of C# online submissions for Find First and Last Position of Element in Sorted Array.
+         */
+        //todo: O(n) time complexity, required O(log n)
+        public int[] SearchRange(int[] nums, int target)
+        {
+            if (nums.Length == 0) return new[] { -1, -1 };
+            int start = 0, stop = nums.Length - 1;
+            while (start < stop)
+            {
+                if (nums[start] < target) start++;
+                if (nums[stop] > target) stop--;
+                if (nums[start] == target && nums[stop] == target) break;
+            }
+            if (nums[start] != target || nums[stop] != target) return new[] { -1, -1 };
+            return new[] { start, stop };
+        }
+
+    }
+
+    // 36. Valid Sudoku todo: ugly solution
+    public class Problem36 : IProblem
+    {
+        /*
+         * Determine if a 9x9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
+         *
+         * Each row must contain the digits 1-9 without repetition.
+         * Each column must contain the digits 1-9 without repetition.
+         * Each of the 9 3x3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+         *
+         * A partially filled sudoku which is valid.
+         *
+         * The Sudoku board could be partially filled, where empty cells are filled with the character '.'.
+         * Note:
+         *
+         * A Sudoku board (partially filled) could be valid but is not necessarily solvable.
+         * Only the filled cells need to be validated according to the mentioned rules.
+         * The given board contain only digits 1-9 and the character '.'.
+         * The given board size is always 9x9.
+         */
+        public void run()
+        {
+
+        }
+        /*
+         * Runtime: 152 ms, faster than 64.86% of C# online submissions for Valid Sudoku.
+         * Memory Usage: 25.4 MB, less than 86.00% of C# online submissions for Valid Sudoku.
+         */
+        public bool IsValidSudoku(char[,] board)
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                string row = "";
+                string column = "";
+                for (int j = 0; j < 9; j++)
+                {
+                    row += board[i, j] + ";";
+                    column += board[j, i] + ";";
+                }
+                if (!Valid(row) || !Valid(column)) return false;
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    string box = "";
+                    for (int m = i * 3; m < 3 + i * 3; m++)
+                    {
+                        for (int n = j * 3; n < 3 + j * 3; n++)
+                        {
+                            box += board[m, n] + ";";
+                        }
+                    }
+                    if (!Valid(box)) return false;
+                }
+            }
+            return true;
+        }
+
+        public bool Valid(string str)
+        {
+            var nrs = str.Split(';');
+            var hash = new HashSet<string>();
+            foreach (var nr in nrs)
+            {
+                if (!nr.Equals("."))
+                    if (!hash.Add(nr))
+                        return false;
+            }
+            return true;
+        }
+    }
+
+    // 39. Combination Sum
+    public class Problem39 : IProblem
+    {
+        /*
+         * Given a set of candidate numbers(candidates) (without duplicates) and a target number(target), find all unique combinations in candidates where the candidate numbers sums to target.
+         *
+         * The same repeated number may be chosen from candidates unlimited number of times.
+         *
+         *
+         * Note:
+         * All numbers (including target) will be positive integers.
+         * The solution set must not contain duplicate combinations.
+         */
+        public void run()
+        {
+            var nums = Generators.RandomIntArrayNonDuplicatePos(20);
+            Array.Sort(nums);
+            var llist = CombinationSum(new[] { 2, 3, 5 }, 8);
+            foreach (var list in llist)
+            {
+                Console.WriteLine(string.Join(";", list));
+            }
+        }
+        /*
+         * Runtime: 332 ms, faster than 21.54% of C# online submissions for Combination Sum.
+         * Memory Usage: 33.4 MB, less than 9.43% of C# online submissions for Combination Sum.
+         */
+        public IList<IList<int>> CombinationSum(int[] candidates, int target)
+        {
+            var llist = new List<IList<int>>();
+            var llistFilted = new List<IList<int>>();
+            var hash = new HashSet<string>();
+
+            Array.Sort(candidates);
+            if (candidates.Contains(target)) llist.Add(new List<int>() { target });
+            int lvl = target / candidates[0] + 1;
+            for (int i = 2; i < lvl + 1; i++)
+            {
+                llist.AddRange(NSum(i, candidates, target));
+            }
+
+            foreach (var list in llist)
+            {
+                if (hash.Add(string.Join(",", list)))
+                {
+                    llistFilted.Add(list);
+                }
+            }
+            return llistFilted;
+
+        }
+
+        public IList<IList<int>> NSum(int n, int[] nums, int target)
+        {
+
+            //Console.WriteLine($"n = {n} , target = {target}, nums =[ {string.Join(", ", nums)} ]");
+            var llist = new List<IList<int>>();
+            if (n == 1) return llist;
+            if (n == 2) return TwoSum(nums, target);
+            for (int i = 0; i < nums.Length; i++)
+            {
+                var newTarget = target - nums[i];
+                if (newTarget > 0)
+                {
+                    var subLList = NSum(n - 1, nums, newTarget);
+                    foreach (var list in subLList)
+                    {
+                        list.Add(nums[i]);
+                        ((List<int>)list).Sort();
+                        llist.Add(list);
+
+                    }
+                }
+            }
+            return llist;
+        }
+
+        public IList<IList<int>> TwoSum(int[] nums, int target)
+        {
+            var llist = new List<IList<int>>();
+            int lo = 0, hi = nums.Length - 1;
+            while (lo <= hi)
+            {
+                if (nums[lo] + nums[hi] == target)
+                {
+                    llist.Add(new List<int> { nums[lo], nums[hi] });
+                }
+                if (nums[lo] + nums[hi] < target) lo++;
+                else hi--;
+            }
+            return llist;
+        }
+
+    }
+
+    // 40. Combination Sum II
+    public class Problem40 : IProblem
+    {
+        /*
+         * Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.
+         *
+         * Each number in candidates may only be used once in the combination.
+         *
+         * Note:
+         *
+         * All numbers (including target) will be positive integers.
+         * The solution set must not contain duplicate combinations.
+         */
+        public void run()
+        {
+            var nums = Generators.RandomIntArrayNonDuplicatePos(20);
+            Array.Sort(nums);
+            var llist = CombinationSum2(new[] { 10, 1, 6, 2, 7, 6, 1, 5 }, 8);
+            foreach (var list in llist)
+            {
+                Console.WriteLine(string.Join(";", list));
+            }
+        }
+
+        public IList<IList<int>> CombinationSum2(int[] candidates, int target)
+        {
+            var llist = new List<IList<int>>();
+
+            Array.Sort(candidates);
+            if (candidates.Contains(target)) llist.Add(new List<int>() { target });
+            for (int i = 2; i < candidates.Length + 1; i++)
+            {
+                llist.AddRange(NSum(i, candidates, target, 0));
+            }
+
+            return llist;
+
+        }
+
+        public IList<IList<int>> NSum(int n, int[] nums, int target, int start)
+        {
+
+            var llist = new List<IList<int>>();
+            if (n == 1) return llist;
+            if (n == 2) return TwoSum(nums, target, start);
+            for (int i = start; i < nums.Length;)
+            {
+                var newTarget = target - nums[i];
+                if (newTarget > 0)
+                {
+                    var subLList = NSum(n - 1, nums, newTarget, i + 1);
+                    foreach (var list in subLList)
+                    {
+                        list.Add(nums[i]);
+                        ((List<int>)list).Sort();
+                        llist.Add(list);
+                    }
+
+                }
+
+                while (++i < nums.Length && nums[i] == nums[i - 1]) ;
+
+            }
+            return llist;
+        }
+
+        public IList<IList<int>> TwoSum(int[] nums, int target, int start)
+        {
+            var llist = new List<IList<int>>();
+            int lo = start, hi = nums.Length - 1;
+            while (lo < hi)
+            {
+                if (nums[lo] + nums[hi] == target)
+                {
+                    llist.Add(new List<int> { nums[lo], nums[hi] });
+                }
+                if (nums[lo] + nums[hi] < target) lo++;
+                else hi--;
+            }
+            return llist;
+        }
+
+    }
 }
