@@ -10,7 +10,7 @@ namespace LeetCode
     {
         static void Main()
         {
-            IProblem problem = new Problem40();
+            IProblem problem = new Problem49();
             var watch = new Stopwatch();
             watch.Start();
             problem.run();

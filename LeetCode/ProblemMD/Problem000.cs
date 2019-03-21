@@ -1072,7 +1072,7 @@ namespace LeetCode.ProblemMD
         }
     }
 
-    // 29. Divide Two Integers todo: Not done yet.
+    // 29. Divide Two Integers todo: Not done.
     public class Problem29 : IProblem
     {
         /*
@@ -1367,7 +1367,7 @@ namespace LeetCode.ProblemMD
         }
     }
 
-    // 39. Combination Sum
+    // 39. Combination Sum todo: 
     public class Problem39 : IProblem
     {
         /*
@@ -1462,7 +1462,7 @@ namespace LeetCode.ProblemMD
 
     }
 
-    // 40. Combination Sum II
+    // 40. Combination Sum II todo:
     public class Problem40 : IProblem
     {
         /*
@@ -1485,10 +1485,14 @@ namespace LeetCode.ProblemMD
                 Console.WriteLine(string.Join(";", list));
             }
         }
-
+        /*
+         * Runtime: 500 ms, faster than 5.67% of C# online submissions for Combination Sum II.
+         * Memory Usage: 30.7 MB, less than 12.50% of C# online submissions for Combination Sum II.
+         */
         public IList<IList<int>> CombinationSum2(int[] candidates, int target)
         {
             var llist = new List<IList<int>>();
+            var hash = new HashSet<string>();
 
             Array.Sort(candidates);
             if (candidates.Contains(target)) llist.Add(new List<int>() { target });
@@ -1497,6 +1501,10 @@ namespace LeetCode.ProblemMD
                 llist.AddRange(NSum(i, candidates, target, 0));
             }
 
+            for (int i = llist.Count - 1; i >= 0; i--)
+            {
+                if (!hash.Add(string.Join(",", llist[i]))) llist.RemoveAt(i);
+            }
             return llist;
 
         }
@@ -1507,7 +1515,7 @@ namespace LeetCode.ProblemMD
             var llist = new List<IList<int>>();
             if (n == 1) return llist;
             if (n == 2) return TwoSum(nums, target, start);
-            for (int i = start; i < nums.Length;)
+            for (int i = start; i < nums.Length; ++i)
             {
                 var newTarget = target - nums[i];
                 if (newTarget > 0)
@@ -1521,9 +1529,6 @@ namespace LeetCode.ProblemMD
                     }
 
                 }
-
-                while (++i < nums.Length && nums[i] == nums[i - 1]) ;
-
             }
             return llist;
         }
@@ -1544,5 +1549,418 @@ namespace LeetCode.ProblemMD
             return llist;
         }
 
+    }
+
+    // 43. Multiply Strings todo: Operate in sum array
+    public class Problem43 : IProblem
+    {
+        /*
+         * Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.
+         * Note:
+         *
+         * The length of both num1 and num2 is < 110.
+         * Both num1 and num2 contain only digits 0-9.
+         * Both num1 and num2 do not contain any leading zero, except the number 0 itself.
+         * You must not use any built-in BigInteger library or convert the inputs to integer directly.
+         */
+        public void run()
+        {
+            var rand = new Random();
+            bool failed = false;
+            while (!failed)
+            {
+                int a = rand.Next(0, (int)Math.Pow(2, 15));
+                int b = rand.Next(0, (int)Math.Pow(2, 15));
+                int product = a * b;
+                var prodStr = Multiply(a.ToString(), b.ToString());
+                failed = !product.ToString().Equals(prodStr);
+                Console.WriteLine($"{a} * {b} = {product} / {prodStr}");
+            }
+        }
+        /*
+         * Runtime: 148 ms, faster than 24.75% of C# online submissions for Multiply Strings.
+         * Memory Usage: 24.2 MB, less than 26.32% of C# online submissions for Multiply Strings.
+         */
+        public string Multiply(string num1, string num2)
+        {
+            if (num1.Equals("0") || num2.Equals("0")) return "0";
+            int zero = 0;
+            int ind1 = num1.Length - 1, ind2 = num2.Length - 1;
+            while (num1[ind1].Equals('0'))
+            {
+                zero++;
+                ind1--;
+            }
+            while (num2[ind2].Equals('0'))
+            {
+                zero++;
+                ind2--;
+            }
+
+            string zeros = "";
+            var total = "0";
+            for (int i = ind1; i >= 0; i--)
+            {
+                int b = num1[i] - 48;
+                int carry = 0;
+                string sum = zeros;
+                for (int j = ind2; j >= 0; j--)
+                {
+                    int a = num2[j] - 48;
+                    int product = a * b + carry;
+                    carry = product / 10;
+                    sum = product % 10 + sum;
+                }
+                if (carry != 0) sum = carry + sum;
+                total = Plus(total, sum);
+                zeros += "0";
+            }
+
+            zeros = "";
+            if (zero != 0) zeros = 0.ToString("X" + zero);
+            return total + zeros;
+        }
+
+        public string Plus(string num1, string num2)
+        {
+            char[] l = num1.Length > num2.Length ? num1.ToCharArray() : num2.ToCharArray();
+            char[] s = num1.Length <= num2.Length ? num1.ToCharArray() : num2.ToCharArray();
+            int carry = 0;
+            for (int i = 1; i <= s.Length; i++)
+            {
+                int a = l[l.Length - i] - 48;
+                int b = s[s.Length - i] - 48;
+                int digiSum = a + b + carry;
+                carry = digiSum / 10;
+                l[l.Length - i] = (char)(digiSum % 10 + 48);
+            }
+
+            int ind = l.Length - s.Length - 1;
+            while (carry == 1 && ind >= 0)
+            {
+                if (l[ind] == '9')
+                {
+                    l[ind] = '0';
+                    ind--;
+                }
+                else
+                {
+                    l[ind] = (char)(l[ind] + 1);
+                    carry = 0;
+                }
+            }
+
+            var str = new string(l);
+            if (carry == 1)
+            {
+                str = 1 + str;
+            }
+
+            return str;
+        }
+    }
+
+    // 46. Permutations
+    public class Problem46 : IProblem
+    {
+        /*
+         * Given a collection of distinct integers, return all possible permutations.
+         */
+        public void run()
+        {
+            var llist = Permute(new[] { 2, 3, 5, 2 });
+            foreach (var list in llist)
+            {
+                Console.WriteLine(string.Join(";", list));
+            }
+        }
+
+        /*
+         * Runtime: 244 ms, faster than 100.00% of C# online submissions for Permutations.
+         * Memory Usage: 29.8 MB, less than 69.09% of C# online submissions for Permutations.
+         */
+        public IList<IList<int>> Permute(int[] nums)
+        {
+            var llist = new List<IList<int>>();
+            if (nums.Length == 0) return llist;
+            Array.Sort(nums);
+            llist.Add(nums.ToList());
+            nums = NextPermutation(nums);
+            while (nums != null)
+            {
+                llist.Add(nums.ToList());
+                nums = NextPermutation(nums);
+            }
+            return llist;
+        }
+
+        public int[] NextPermutation(int[] nums)
+        {
+            int lo = -1;
+            for (int i = 0; i < nums.Length - 1; i++)
+            {
+                if (nums[i] < nums[i + 1]) lo = i;
+            }
+
+            if (lo == -1) return null;
+            int hi = -1;
+            for (int i = lo + 1; i < nums.Length; i++)
+            {
+                if (nums[i] > nums[lo]) hi = i;
+            }
+            var temp = nums[lo];
+            nums[lo] = nums[hi];
+            nums[hi] = temp;
+            hi = nums.Length - 1;
+            lo = lo + 1;
+            while (lo < hi)
+            {
+                temp = nums[lo];
+                nums[lo] = nums[hi];
+                nums[hi] = temp;
+                lo++;
+                hi--;
+            }
+            return nums;
+        }
+    }
+
+    // 47. Permutations II
+    public class Problem47 : IProblem
+    {
+        /*
+         * Given a collection of distinct integers, return all possible permutations.
+         */
+        public void run()
+        {
+            var llist = PermuteUnique(new[] { 2, 3, 5, 2 });
+            foreach (var list in llist)
+            {
+                Console.WriteLine(string.Join(";", list));
+            }
+        }
+
+        /*
+         * Runtime: 280 ms, faster than 69.04% of C# online submissions for Permutations II.
+         * Memory Usage: 31.1 MB, less than 94.12% of C# online submissions for Permutations II.
+         */
+        public IList<IList<int>> PermuteUnique(int[] nums)
+        {
+            var llist = new List<IList<int>>();
+            if (nums.Length == 0) return llist;
+            Array.Sort(nums);
+            llist.Add(nums.ToList());
+            nums = NextPermutation(nums);
+            while (nums != null)
+            {
+                llist.Add(nums.ToList());
+                nums = NextPermutation(nums);
+            }
+            return llist;
+        }
+
+        public int[] NextPermutation(int[] nums)
+        {
+            int lo = -1;
+            for (int i = 0; i < nums.Length - 1; i++)
+            {
+                if (nums[i] < nums[i + 1]) lo = i;
+            }
+
+            if (lo == -1) return null;
+            int hi = -1;
+            for (int i = lo + 1; i < nums.Length; i++)
+            {
+                if (nums[i] > nums[lo]) hi = i;
+            }
+            var temp = nums[lo];
+            nums[lo] = nums[hi];
+            nums[hi] = temp;
+            hi = nums.Length - 1;
+            lo = lo + 1;
+            while (lo < hi)
+            {
+                temp = nums[lo];
+                nums[lo] = nums[hi];
+                nums[hi] = temp;
+                lo++;
+                hi--;
+            }
+            return nums;
+        }
+    }
+
+    // 48. Rotate Image
+    public class Problem48 : IProblem
+    {
+        /*
+         * You are given an n x n 2D matrix representing an image.
+         *
+         * Rotate the image by 90 degrees (clockwise).
+         *
+         * Note:
+         *
+         * You have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.
+         */
+        public void run()
+        {
+            Rotate(new int[,] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } });
+        }
+        /*
+         * Runtime: 92 ms, faster than 100.00% of C# online submissions for Rotate Image.
+         * Memory Usage: 22.2 MB, less than 51.06% of C# online submissions for Rotate Image.
+         */
+
+        public void Rotate(int[,] matrix)
+        {
+            // For Counter Clockwise Reverse should from left to right instead of top to bottom
+            Reverse(ref matrix);
+            Symmetry(ref matrix);
+        }
+
+        public void Reverse(ref int[,] matrix)
+        {
+            int lo = -1, hi = matrix.GetLength(1);
+            while (++lo < --hi)
+            {
+                for (int i = 0; i < matrix.GetLength(0); i++)
+                {
+                    Swap(ref matrix[lo, i], ref matrix[hi, i]);
+                }
+            }
+        }
+
+        public void Symmetry(ref int[,] matrix)
+        {
+            for (int i = 0; i < matrix.GetLength(1); i++)
+            {
+                for (int j = i + 1; j < matrix.GetLength(0); j++)
+                {
+                    Swap(ref matrix[i, j], ref matrix[j, i]);
+                }
+            }
+        }
+
+        public void Swap(ref int a, ref int b)
+        {
+            var tmp = a;
+            a = b;
+            b = tmp;
+        }
+    }
+
+    // 49. Group Anagrams
+    public class Problem49 : IProblem
+    {
+        /*
+         * Given an array of strings, group anagrams together.
+         *
+         * Example:
+         *
+         * Input: ["eat", "tea", "tan", "ate", "nat", "bat"],
+         * Output:
+         * [
+         *      ["ate","eat","tea"],
+         *      ["nat","tan"],
+         *      ["bat"]
+         * ]
+         * Note:
+         * 
+         * All inputs will be in lowercase.
+         * The order of your output does not matter.
+         */
+        public static Dictionary<char, int> CharWeight = new Dictionary<char, int>();
+        public Problem49()
+        {
+            int n = 1;
+            for (int i = 'a'; i < 'z' + 1; i++)
+            {
+                n = Prime.NextPrime(n);
+                CharWeight.Add((char)i, n);
+            }
+        }
+        public void run()
+        {
+            var llist = GroupAnagrams(new[] { "abc", "bac", "cab", "acb", "cba", "adg", "afg", "gba", "akg", "gfa" });
+            foreach (var list in llist)
+            {
+                Console.WriteLine(string.Join(";", list));
+            }
+        }
+        /*
+         * Runtime: 292 ms, faster than 98.79% of C# online submissions for Group Anagrams.
+         * Memory Usage: 36.5 MB, less than 92.31% of C# online submissions for Group Anagrams.
+         */
+        public IList<IList<string>> GroupAnagrams(string[] strs)
+        {
+            var dict = new Dictionary<int, List<string>>();
+            foreach (var str in strs)
+            {
+                var key = CalcWeight(str);
+                if (dict.ContainsKey(key))
+                {
+                    dict[key].Add(str);
+                }
+                else
+                {
+                    dict.Add(key, new List<string>() { str });
+                }
+            }
+            var llist = new List<IList<string>>();
+            {
+                foreach (var dictValue in dict.Values)
+                {
+                    llist.Add(dictValue);
+                }
+            }
+            return llist;
+        }
+        public int CalcWeight(string str)
+        {
+            var weight = 1;
+            str = str.ToLower();
+            foreach (var ch in str)
+            {
+                weight *= CharWeight[ch];
+            }
+            return weight;
+        }
+
+
+
+    }
+
+    // 50. Pow(x, n)
+    public class Problem50 : IProblem
+    {
+        /*
+         * Implement pow(x, n), which calculates x raised to the power n (xn).
+         *
+         * Example 1:
+         *
+         * Input: 2.00000, 10
+         * Output: 1024.00000
+         * Example 2:
+         *
+         * Input: 2.10000, 3
+         * Output: 9.26100
+         * Example 3:
+         *
+         * Input: 2.00000, -2
+         * Output: 0.25000
+         * Explanation: 2-2 = 1/22 = 1/4 = 0.25
+         * Note:
+         *
+         * -100.0 < x < 100.0
+         * n is a 32-bit signed integer, within the range [−231, 231 − 1]
+         */
+        public void run()
+        {
+
+        }
+        public double MyPow(double x, int n)
+        {
+
+        }
     }
 }
