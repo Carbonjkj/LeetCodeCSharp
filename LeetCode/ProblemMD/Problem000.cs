@@ -1956,11 +1956,42 @@ namespace LeetCode.ProblemMD
          */
         public void run()
         {
-
+            Console.WriteLine(MyPow(2, -10));
         }
+        Dictionary<int, double> Pows = new Dictionary<int, double>();
+        /*
+         * Runtime: 44 ms, faster than 88.15% of C# online submissions for Pow(x, n).
+         * Memory Usage: 14.2 MB, less than 7.46% of C# online submissions for Pow(x, n).
+         */
         public double MyPow(double x, int n)
         {
-
+            if (n == 0) return 1;
+            if (n == 1) return x;
+            if (n == -1) return 1 / x;
+            if (x == 0) return 0;
+            if (x == 1) return 1;
+            if (x == -1) return n % 2 == 0 ? 1 : -1;
+            int p = n > 0 ? -n : n;
+            int k = 1;
+            double pow2 = x;
+            if (Pows.Count == 0)
+            {
+                Pows.Add(1, x);
+                while (-k >= p && -k >= Int32.MinValue / 2)
+                {
+                    k *= 2;
+                    pow2 = pow2 * pow2;
+                    Pows.Add(k, pow2);
+                }
+            }
+            else
+            {
+                k = Pows.Keys.Last(key => -key > p);
+                pow2 = Pows[k];
+            }
+            pow2 *= MyPow(x, -(p + k));
+            Console.WriteLine($"{x} ^ {p} = {pow2}");
+            return n > 0 ? pow2 : 1 / pow2;
         }
     }
 }
