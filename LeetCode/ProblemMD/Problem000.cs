@@ -1994,4 +1994,140 @@ namespace LeetCode.ProblemMD
             return n > 0 ? pow2 : 1 / pow2;
         }
     }
+
+    // 54. Spiral Matrix
+    public class Problem54 : IProblem
+    {
+        /*
+         * Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.
+         */
+        public void run()
+        {
+            var matrix = Generators.Ordered2DMatrix(3, 4);
+            Console.WriteLine(string.Join(",", SpiralOrder(matrix)));
+        }
+        /*
+         * Runtime: 276 ms, faster than 58.66% of C# online submissions for Spiral Matrix.
+         * Memory Usage: 27.5 MB, less than 97.50% of C# online submissions for Spiral Matrix.
+         */
+        // Normal traverse   
+        public IList<int> SpiralOrder(int[,] matrix)
+        {
+            List<int> list = new List<int>();
+            if (matrix.GetLength(0) == 0 && matrix.GetLength(1) == 0) return list;
+            int startR = 0, startC = 0, stopR = matrix.GetLength(0) - 1, stopC = matrix.GetLength(1) - 1;
+            while (startR <= stopR && startC <= stopC)
+            {
+                for (int i = startC; i <= stopC; i++)
+                {
+                    list.Add(matrix[startR, i]);
+                }
+                startR++;
+                for (int i = startR; i <= stopR; i++)
+                {
+                    list.Add(matrix[i, stopC]);
+                }
+                stopC--;
+                for (int i = stopC; i >= startC; i--)
+                {
+                    if (startR <= stopR)
+                        list.Add(matrix[stopR, i]);
+                }
+                stopR--;
+                for (int i = stopR; i >= startR; i--)
+                {
+                    if (startC <= stopC)
+                        list.Add(matrix[i, startC]);
+                }
+                startC++;
+            }
+            return list;
+        }
+
+        // Another way, take the first row, and counter clockwise rotate the rest 90 degree and recursive.
+
+    }
+
+    // 55. Jump Game
+    public class Problem55 : IProblem
+    {
+        /*
+         * Given an array of non-negative integers, you are initially positioned at the first index of the array.
+         *
+         * Each element in the array represents your maximum jump length at that position.
+         *
+         * Determine if you are able to reach the last index.
+         */
+        public void run()
+        {
+            var array = Generators.RandomIntArrayNonNeg(10);
+            var nums = new int[] { 2, 3, 1, 1, 4 };
+            Console.WriteLine(CanJump(nums));
+
+        }
+        /*
+         * Runtime: 684 ms, faster than 34.02% of C# online submissions for Jump Game.
+         * Memory Usage: 23.9 MB, less than 100.00% of C# online submissions for Jump Game.
+         */
+        public bool CanJump(int[] nums)
+        {
+            int currInd = nums.Length - 1;
+
+            while (nums[0] < currInd)
+            {
+                Console.WriteLine(currInd);
+                var temp = currInd;
+                for (int i = 0; i < currInd; i++)
+                {
+                    if (i + nums[i] >= currInd)
+                    {
+                        currInd = i;
+                    }
+                }
+                if (currInd == temp) return false;
+            }
+            return true;
+        }
+    }
+
+    // 56. Merge Intervals todo Speed Up
+    public class Problem56 : IProblem
+    {
+        /*
+         * Given a collection of intervals, merge all overlapping intervals.
+         */
+        public void run()
+        {
+            var list = new List<Interval>();
+            list.Add(new Interval(1, 4));
+            list.Add(new Interval(0, 0));
+            Merge(list);
+        }
+        /*
+         * Runtime: 492 ms, faster than 8.88% of C# online submissions for Merge Intervals.
+         * Memory Usage: 32.6 MB, less than 39.66% of C# online submissions for Merge Intervals.
+         */
+        public IList<Interval> Merge(IList<Interval> intervals)
+        {
+            var list = intervals.OrderBy(i => i.start).ToList();
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                while (i > 0 && (list[i].start <= list[i - 1].end || list[i - 1].start >= list[i].start))
+                {
+                    list[i - 1].start = Math.Min(list[i].start, list[i - 1].start);
+                    list[i - 1].end = Math.Max(list[i].end, list[i - 1].end);
+                    list.Remove(list[i]);
+                    i--;
+                }
+            }
+            int oldCount = intervals.Count, newCount = list.Count;
+            while (oldCount != newCount)
+            {
+                list = Merge(list).ToList();
+                oldCount = newCount;
+                newCount = list.Count;
+            }
+            return list;
+        }
+    }
 }

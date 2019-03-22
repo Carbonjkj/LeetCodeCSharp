@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="IProblem.cs" />
     <Compile Include="Objects\DoublyLinkNode.cs" />
+    <Compile Include="Objects\Interval.cs" />
     <Compile Include="Objects\ListNode.cs" />
     <Compile Include="Objects\MinNode.cs" />
     <Compile Include="Objects\TreeNode.cs" />

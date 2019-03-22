@@ -10,10 +10,17 @@ namespace LeetCode
     {
         static void Main()
         {
-            IProblem problem = new Problem50();
+            IProblem problem = new Problem56();
             var watch = new Stopwatch();
             watch.Start();
-            problem.run();
+            try
+            {
+                problem.run();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             watch.Stop();
             Console.WriteLine("Time Elapsed: " + watch.Elapsed);
             Console.ReadLine();
