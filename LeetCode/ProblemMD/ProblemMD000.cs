@@ -2130,4 +2130,229 @@ namespace LeetCode.ProblemMD
             return list;
         }
     }
+
+    // 59. Spiral Matrix II todo Cant compile in leetcode
+    public class Problem59 : IProblem
+    {
+        /*
+         * Given a positive integer n, generate a square matrix filled with elements from 1 to n2 in spiral order.
+         */
+        public void run()
+        {
+            var matrix = GenerateMatrix(15);
+            General.PrintOut2DArray(matrix);
+        }
+
+        public int[,] GenerateMatrix(int n)
+        {
+            int[,] matrix = new int[1, 1] { { n * n } };
+            int current = n * n - 1;
+            while (current >= 1)
+            {
+
+                RotateMatrix(ref matrix);
+                int[] fisrtRow = new int[matrix.GetLength(1)];
+                for (int i = fisrtRow.Length - 1; i >= 0; i--)
+                {
+                    fisrtRow[i] = current--;
+                }
+                matrix = AddToFirstRow(matrix, fisrtRow);
+                int[] fisrtCol = new int[matrix.GetLength(0)];
+                for (int i = 0; i < fisrtCol.Length; i++)
+                {
+                    fisrtCol[i] = current--;
+                }
+                matrix = AddToFirstColumn(matrix, fisrtCol);
+                RotateMatrix(ref matrix);
+            }
+
+            return matrix;
+        }
+
+        public void RotateMatrix(ref int[,] matrix)
+        {
+            Reverse(ref matrix);
+            Symmetry(ref matrix);
+        }
+
+        public void Reverse(ref int[,] matrix)
+        {
+            int lo = -1, hi = matrix.GetLength(1);
+            while (++lo < --hi)
+            {
+                for (int i = 0; i < matrix.GetLength(1); i++)
+                {
+                    Swap(ref matrix[lo, i], ref matrix[hi, i]);
+                }
+            }
+        }
+        public void Symmetry(ref int[,] matrix)
+        {
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = i + 1; j < matrix.GetLength(1); j++)
+                {
+                    Swap(ref matrix[i, j], ref matrix[j, i]);
+                }
+            }
+        }
+
+        public void Swap(ref int a, ref int b)
+        {
+            var tmp = a;
+            a = b;
+            b = tmp;
+        }
+        public int[,] AddToFirstRow(int[,] matrix, int[] row)
+        {
+            int[,] newMatrix = new int[matrix.GetLength(0) + 1, row.Length];
+
+            for (int i = 0; i < row.Length; i++)
+            {
+                newMatrix[0, i] = row[i];
+            }
+            for (int i = 1; i < newMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < newMatrix.GetLength(1); j++)
+                {
+                    newMatrix[i, j] = matrix[i - 1, j];
+                }
+            }
+            return newMatrix;
+        }
+        public int[,] AddToFirstColumn(int[,] matrix, int[] column)
+        {
+            int[,] newMatrix = new int[column.Length, matrix.GetLength(1) + 1];
+
+            for (int i = 0; i < column.Length; i++)
+            {
+                newMatrix[i, 0] = column[i];
+            }
+            for (int i = 0; i < newMatrix.GetLength(0); i++)
+            {
+                for (int j = 1; j < newMatrix.GetLength(1); j++)
+                {
+                    newMatrix[i, j] = matrix[i, j - 1];
+                }
+            }
+            return newMatrix;
+        }
+    }
+
+    // 60. Permutation Sequence todo Speed Up
+    public class Problem60 : IProblem
+    {
+        /*
+         * The set [1,2,3,...,n] contains a total of n! unique permutations.
+         *
+         * By listing and labeling all of the permutations in order, we get the following sequence for n = 3:
+         *
+         * "123"
+         * "132"
+         * "213"
+         * "231"
+         * "312"
+         * "321"
+         * Given n and k, return the kth permutation sequence.
+         *
+         * Note:
+         *
+         * Given n will be between 1 and 9 inclusive.
+         * Given k will be between 1 and n! inclusive.
+         */
+        public void run()
+        {
+            Console.WriteLine(GetPermutation(7, 64));
+        }
+        // Implement Problem47
+        /*
+         * Runtime: 288 ms, faster than 20.30% of C# online submissions for Permutation Sequence.
+         * Memory Usage: 20.8 MB, less than 20.00% of C# online submissions for Permutation Sequence.
+         */
+        public string GetPermutation(int n, int k)
+        {
+            int[] nums = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                nums[i] = i + 1;
+            }
+
+            int a = 1;
+            while (a++ < k)
+            {
+                nums = NextPermutation(nums);
+            }
+
+            return string.Join("", nums);
+        }
+
+        public int[] NextPermutation(int[] nums)
+        {
+            int lo = -1;
+            for (int i = 0; i < nums.Length - 1; i++)
+            {
+                if (nums[i] < nums[i + 1]) lo = i;
+            }
+
+            if (lo == -1) return null;
+            int hi = -1;
+            for (int i = lo + 1; i < nums.Length; i++)
+            {
+                if (nums[i] > nums[lo]) hi = i;
+            }
+            var temp = nums[lo];
+            nums[lo] = nums[hi];
+            nums[hi] = temp;
+            hi = nums.Length - 1;
+            lo = lo + 1;
+            while (lo < hi)
+            {
+                temp = nums[lo];
+                nums[lo] = nums[hi];
+                nums[hi] = temp;
+                lo++;
+                hi--;
+            }
+            return nums;
+        }
+    }
+
+    // 61. Rotate List
+    public class Problem61 : IProblem
+    {
+        /*
+         * Given a linked list, rotate the list to the right by k places, where k is non-negative.
+         * Input: 1->2->3->4->5->NULL, k = 2
+         * Output: 4->5->1->2->3->NULL
+         * Explanation:
+         * rotate 1 steps to the right: 5->1->2->3->4->NULL
+         * rotate 2 steps to the right: 4->5->1->2->3->NULL
+         */
+        public void run()
+        {
+
+        }
+        // k is larger than length
+        public ListNode RotateRight(ListNode head, int k)
+        {
+            var oldHead = head;
+            var temp = head;
+            int n = 0;
+            while (head.next != null)
+            {
+                if (n - k == 0)
+                    temp = oldHead;
+                head = head.next;
+                if (n - k > 1)
+                    temp = temp.next;
+                n++;
+            }
+
+            head.next = oldHead;
+            head = temp.next.next;
+            temp.next.next = null;
+            return head;
+
+        }
+    }
 }

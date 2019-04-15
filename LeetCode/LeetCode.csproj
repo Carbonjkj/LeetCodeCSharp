@@ -48,11 +48,11 @@
     <Compile Include="Objects\ListNode.cs" />
     <Compile Include="Objects\MinNode.cs" />
     <Compile Include="Objects\TreeNode.cs" />
-    <Compile Include="ProblemEZ\Problem000.cs" />
-    <Compile Include="ProblemEZ\Problem100.cs" />
-    <Compile Include="ProblemEZ\Problem200.cs" />
-    <Compile Include="ProblemEZ\Problem300.cs" />
-    <Compile Include="ProblemMD\Problem000.cs" />
+    <Compile Include="ProblemEZ\ProblemEZ000.cs" />
+    <Compile Include="ProblemEZ\ProblemEZ100.cs" />
+    <Compile Include="ProblemEZ\ProblemEZ200.cs" />
+    <Compile Include="ProblemEZ\ProblemEZ300.cs" />
+    <Compile Include="ProblemMD\ProblemMD000.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\General.cs" />
